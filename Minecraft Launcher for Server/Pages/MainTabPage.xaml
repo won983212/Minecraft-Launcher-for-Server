@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Minecraft_Launcher_for_Server.Pages.MainTabPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
+             xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="540" d:DesignWidth="860">
+    <Grid>
+        <component:BackgroundImage x:Name="imgBackground" />
+        <Rectangle Width="200" HorizontalAlignment="Left">
+            <Rectangle.Effect>
+                <BlurEffect Radius="15" RenderingBias="Quality" />
+            </Rectangle.Effect>
+            <Rectangle.Fill>
+                <VisualBrush Visual="{Binding ElementName=imgBackground}" Stretch="None" Viewbox="0,0,0.23,1" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid Background="#e6181818" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Image Source="/Resources/logoText.png" Height="20" Margin="15" RenderOptions.BitmapScalingMode="Fant" />
+            <Separator Grid.Row="1" Margin="15,0" Background="#ff707070" />
+            <ListBox Grid.Row="2" Margin="15,10" ItemsSource="{Binding TabItems}" SelectedIndex="{Binding CurrentPageIndex}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="{Binding Icon}" Width="18" Height="18" Margin="6,3,20,3" />
+                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="8pt"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

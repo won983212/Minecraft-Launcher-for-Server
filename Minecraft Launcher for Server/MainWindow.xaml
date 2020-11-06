@@ -1,0 +1,47 @@
+﻿<Window x:Class="Minecraft_Launcher_for_Server.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
+        xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+        xmlns:page="clr-namespace:Minecraft_Launcher_for_Server.Pages"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        MouseDown="Window_MouseDown"
+        Title="MainWindow" Height="540" Width="860">
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:LoginFormViewModel}">
+            <page:LoginForm />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:MainTabViewModel}">
+            <page:MainTabPage />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <ContentControl Content="{Binding CurrentPage}" />
+
+        <!-- ErrorDialog -->
+        <component:ErrorDialog x:Name="dialogError" ErrorObject="{Binding ErrorInfo}" IsShow="{Binding ErrorVisible, Mode=TwoWay}"/>
+
+        <!-- Top Snackbar -->
+        <materialDesign:Snackbar x:Name="ErrorSnackbar" VerticalAlignment="Top" Background="{StaticResource SecondaryHueMidBrush}" 
+                                 Foreground="White" MessageQueue="{Binding SnackMessages}">
+            <materialDesign:Snackbar.Resources>
+                <Style BasedOn="{StaticResource {x:Type materialDesign:SnackbarMessage}}" TargetType="{x:Type materialDesign:SnackbarMessage}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </materialDesign:Snackbar.Resources>
+        </materialDesign:Snackbar>
+
+        <!-- Exit button -->
+        <Button Style="{StaticResource MaterialDesignIconButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Exit_Click" Width="30" Height="30">
+            <materialDesign:PackIcon Kind="Close" Foreground="White" Width="18" Height="18" />
+        </Button>
+    </Grid>
+</Window>
