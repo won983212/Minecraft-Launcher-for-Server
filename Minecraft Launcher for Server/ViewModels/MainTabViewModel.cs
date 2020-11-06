@@ -14,10 +14,9 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         public PageViewModel ViewModel { get; set; }
     }
 
-    class MainTabViewModel : PageViewModel
+    class MainTabViewModel : ApplicationViewModel
     {
         private int _currentPageIndex;
-        private PageViewModel _currentPage;
 
         public int CurrentPageIndex
         {
@@ -29,23 +28,13 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
-        public PageViewModel CurrentPage
-        {
-            get => _currentPage;
-            set
-            {
-                _currentPage = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ObservableCollection<TabItem> TabItems { get; set; }
 
         public MainTabViewModel(ApplicationViewModel root)
             : base(root)
         {
             TabItems = new ObservableCollection<TabItem>();
-            TabItems.Add(new TabItem() { Title = "홈", Icon = "Home", ViewModel = null });
+            TabItems.Add(new TabItem() { Title = "홈", Icon = "Home", ViewModel = new HomeTabViewModel(this) });
             TabItems.Add(new TabItem() { Title = "공지사항", Icon = "Notifications", ViewModel = null });
             TabItems.Add(new TabItem() { Title = "이벤트", Icon = "CardGiftcard", ViewModel = null });
             TabItems.Add(new TabItem() { Title = "패치내역", Icon = "ContentPaste", ViewModel = null });

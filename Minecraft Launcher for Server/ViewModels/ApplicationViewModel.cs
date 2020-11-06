@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class ApplicationViewModel : ObservableObject
+    class ApplicationViewModel : PageViewModel
     {
         private PageViewModel _currentPage;
 
@@ -23,7 +23,11 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         }
 
         public ApplicationViewModel()
-        {
-        }
+            :this(null)
+        { }
+
+        public ApplicationViewModel(ApplicationViewModel rootViewModel)
+            : base(rootViewModel)
+        { }
     }
 }

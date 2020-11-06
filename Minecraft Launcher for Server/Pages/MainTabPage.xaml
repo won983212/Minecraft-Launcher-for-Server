@@ -5,11 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
              xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+             xmlns:tab="clr-namespace:Minecraft_Launcher_for_Server.Tabs"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="540" d:DesignWidth="860">
     <Grid>
-        <component:BackgroundImage x:Name="imgBackground" />
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type viewmodel:HomeTabViewModel}">
+                <tab:HomeTab />
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <component:BackgroundImage x:Name="imgBackground" Grid.ColumnSpan="2" />
         <Rectangle Width="200" HorizontalAlignment="Left">
             <Rectangle.Effect>
                 <BlurEffect Radius="15" RenderingBias="Quality" />
@@ -38,5 +48,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
     </Grid>
 </UserControl>
