@@ -49,5 +49,13 @@
             </ListBox>
         </Grid>
         <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
+        <Rectangle Width="3" HorizontalAlignment="Left" Grid.Column="1" >
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                    <GradientStop Color="#aa181818"/>
+                    <GradientStop Color="#00000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </UserControl>

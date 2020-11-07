@@ -39,9 +39,16 @@
             </materialDesign:Snackbar.Resources>
         </materialDesign:Snackbar>
 
-        <!-- Exit button -->
-        <Button Style="{StaticResource MaterialDesignIconButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Exit_Click" Width="30" Height="30">
-            <materialDesign:PackIcon Kind="Close" Foreground="White" Width="18" Height="18" />
-        </Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <!-- Config button -->
+            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30">
+                <materialDesign:PackIcon Kind="Settings" Foreground="White" Width="18" Height="18" />
+            </Button>
+
+            <!-- Exit button -->
+            <Button Style="{StaticResource MaterialDesignIconButton}" Click="Exit_Click" Width="30" Height="30">
+                <materialDesign:PackIcon Kind="Close" Foreground="White" Width="18" Height="18" />
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>

@@ -40,7 +40,6 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             TabItems.Add(new TabItem() { Title = "패치내역", Icon = "ContentPaste", ViewModel = null });
             TabItems.Add(new TabItem() { Title = "가이드", Icon = "ImportContacts", ViewModel = null });
             TabItems.Add(new TabItem() { Title = "프로필", Icon = "Account", ViewModel = null });
-            TabItems.Add(new TabItem() { Title = "설정", Icon = "Settings", ViewModel = null });
             UpdatePage(0);
         }
 
