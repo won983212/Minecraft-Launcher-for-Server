@@ -19,7 +19,7 @@
         <DataTemplate DataType="{x:Type viewmodel:LoginFormViewModel}">
             <page:LoginForm />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:MainTabViewModel}">
+        <DataTemplate DataType="{x:Type viewmodel:TabMainViewModel}">
             <page:MainTabPage />
         </DataTemplate>
     </Window.Resources>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class LoginFormViewModel : PageViewModel
+    class LoginFormViewModel : PageViewModelBase
     {
-        public LoginFormViewModel(ApplicationViewModel root)
+        public LoginFormViewModel(ParentViewModelBase root)
             : base(root)
         { }
     }

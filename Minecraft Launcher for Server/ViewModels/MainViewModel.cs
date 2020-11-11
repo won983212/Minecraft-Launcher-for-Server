@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class MainViewModel : ApplicationViewModel
+    class MainViewModel : ParentViewModelBase
     {
         private ErrorMessageObject _errorInfo;
         private bool _errorVisible = false;
@@ -41,7 +41,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 
         public MainViewModel()
         {
-            CurrentPage = new MainTabViewModel(this);
+            CurrentPage = new TabMainViewModel(this);
             SnackMessages = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
             ErrorInfo = new ErrorMessageObject();
         }

@@ -8,11 +8,11 @@ using System.Windows.Input;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class ApplicationViewModel : PageViewModel
+    class ParentViewModelBase : PageViewModelBase
     {
-        private PageViewModel _currentPage;
+        private PageViewModelBase _currentPage;
 
-        public PageViewModel CurrentPage
+        public PageViewModelBase CurrentPage
         {
             get => _currentPage;
             set
@@ -22,11 +22,11 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
-        public ApplicationViewModel()
+        public ParentViewModelBase()
             :this(null)
         { }
 
-        public ApplicationViewModel(ApplicationViewModel rootViewModel)
+        public ParentViewModelBase(ParentViewModelBase rootViewModel)
             : base(rootViewModel)
         { }
     }

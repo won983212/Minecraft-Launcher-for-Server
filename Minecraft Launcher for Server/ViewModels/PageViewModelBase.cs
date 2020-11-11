@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class PageViewModel : ObservableObject
+    class PageViewModelBase : ObservableObject
     {
-        public readonly ApplicationViewModel RootViewModel;
+        public readonly ParentViewModelBase RootViewModel;
 
-        public PageViewModel(ApplicationViewModel rootViewModel)
+        public PageViewModelBase(ParentViewModelBase rootViewModel)
         {
             RootViewModel = rootViewModel;
         }

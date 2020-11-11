@@ -88,13 +88,14 @@
     <Compile Include="Tabs\HomeTab.xaml.cs">
       <DependentUpon>HomeTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\HomeTabViewModel.cs" />
+    <Compile Include="Updater\AssetsDownloader.cs" />
+    <Compile Include="ViewModels\TabHomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModelBase.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="ViewModels\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\MainTabViewModel.cs" />
+    <Compile Include="ViewModels\ParentViewModelBase.cs" />
+    <Compile Include="ViewModels\TabMainViewModel.cs" />
     <Compile Include="ViewModels\LoginFormViewModel.cs" />
     <Page Include="Components\BackgroundImage.xaml">
       <SubType>Designer</SubType>

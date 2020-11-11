@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    class HomeTabViewModel : PageViewModel
+    class TabHomeViewModel : PageViewModelBase
     {
-        public HomeTabViewModel(ApplicationViewModel parent)
+        public TabHomeViewModel(ParentViewModelBase parent)
             : base(parent)
         { }
     }
