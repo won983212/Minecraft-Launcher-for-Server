@@ -14,8 +14,8 @@ namespace Minecraft_Launcher_for_Server.Updater
     {
         private string _assetsPath;
         private string _assetsIndexUrl;
-        private int count = 0;
-        private int total = 0;
+        private int _count = 0;
+        private int _total = 0;
 
         public AssetsDownloader(string assetsPath, string indexUrl)
         {
@@ -54,7 +54,7 @@ namespace Minecraft_Launcher_for_Server.Updater
                 }
             }
 
-            Interlocked.Exchange(ref total, hash.Count);
+            Interlocked.Exchange(ref _total, hash.Count);
             Parallel.ForEach(hash, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (h) => DownloadFile(objectsFolder, h));
         }
 
@@ -80,9 +80,9 @@ namespace Minecraft_Launcher_for_Server.Updater
 
             sr.Close();
             sw.Close();
-            Interlocked.Increment(ref count);
+            Interlocked.Increment(ref _count);
 
-            Console.WriteLine((count * 100.0 / total) + "% --- End download " + hash);
+            Console.WriteLine((_count * 100.0 / _total) + "% --- End download " + hash);
         }
     }
 }

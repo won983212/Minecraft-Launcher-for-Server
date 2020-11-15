@@ -89,6 +89,7 @@
       <DependentUpon>HomeTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Updater\AssetsDownloader.cs" />
+    <Compile Include="Updater\PatchesDownloader.cs" />
     <Compile Include="ViewModels\TabHomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PageViewModelBase.cs" />
