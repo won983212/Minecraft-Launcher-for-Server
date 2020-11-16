@@ -27,19 +27,7 @@ namespace Minecraft_Launcher_for_Server.Updater
 
         public string GetActualPath(string parent, bool useHashPath)
         {
-            return Path.Combine(parent, useHashPath ? (Hash.Substring(0, 2) + "/" + Hash) : FilePath);
-        }
-    }
-
-    public class ProgressArgs
-    {
-        public double Progress { get; }
-        public string Status { get; }
-
-        public ProgressArgs(double progress, string status)
-        {
-            Progress = progress;
-            Status = status;
+            return Path.Combine(parent, useHashPath ? (Hash.Substring(0, 2) + "\\" + Hash) : FilePath);
         }
     }
 
@@ -110,7 +98,8 @@ namespace Minecraft_Launcher_for_Server.Updater
                 foreach (byte b in hash)
                     sb.AppendFormat("{0:X2}", b);
             }
-            return sb.ToString() == file.Hash;
+
+            return string.Equals(sb.ToString(), file.Hash, StringComparison.OrdinalIgnoreCase);
         }
 
         private void Download()
@@ -145,7 +134,7 @@ namespace Minecraft_Launcher_for_Server.Updater
                 {
                     FileObj file = new FileObj(p);
                     if (DownloadOnlyNecessary && CheckHash(sha1, parentFolder, file))
-                        Debug.WriteLine("Ignore " + file.FilePath);
+                        Logger.Debug("Ignore " + file.FilePath);
                     else
                         files.Add(file);
                 }
@@ -163,7 +152,6 @@ namespace Minecraft_Launcher_for_Server.Updater
             } 
             catch (OperationCanceledException e)
             {
-                Console.WriteLine(e.Message);
                 _isRunning = false;
                 _isCanceling = false;
             }

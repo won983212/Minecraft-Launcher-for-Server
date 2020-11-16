@@ -34,10 +34,22 @@ namespace Minecraft_Launcher_for_Server.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
-        public string RestServerIP {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost")]
+        public string RestServerLocation {
             get {
-                return ((string)(this["RestServerIP"]));
+                return ((string)(this["RestServerLocation"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:/users/psvm/desktop/minecraft")]
+        public string SavePath {
+            get {
+                return ((string)(this["SavePath"]));
+            }
+            set {
+                this["SavePath"] = value;
             }
         }
     }

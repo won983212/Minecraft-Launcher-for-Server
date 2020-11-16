@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Components\NoSizeDecorator.cs" />
     <Compile Include="ErrorMessageObject.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="MinecraftAPI.cs" />
     <Compile Include="Pages\MainTabPage.xaml.cs">
       <DependentUpon>MainTabPage.xaml</DependentUpon>
@@ -93,6 +94,7 @@
     </Compile>
     <Compile Include="Updater\HashDownloader.cs" />
     <Compile Include="Updater\ContentUpdater.cs" />
+    <Compile Include="Updater\ProgressArgs.cs" />
     <Compile Include="ViewModels\TabHomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PageViewModelBase.cs" />

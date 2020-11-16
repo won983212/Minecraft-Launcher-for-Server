@@ -1,4 +1,5 @@
-﻿using Minecraft_Launcher_for_Server.Updater;
+﻿using Minecraft_Launcher_for_Server;
+using Minecraft_Launcher_for_Server.Updater;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace TestApp
         MainClass()
         {
             // Assets downloader test
-            /*HashDownloader downloader = new HashDownloader(@"C:\Users\psvm\Desktop\assets", "https://launchermeta.mojang.com/mc/assets/1.12/67e29e024e664064c1f04c728604f83c24cbc218/1.12.json", "http://resources.download.minecraft.net/");
+            /*HashDownloader downloader = new HashDownloader(@"C:\Users\psvm\Desktop\minecraft\assets", "https://launchermeta.mojang.com/mc/assets/1.12/67e29e024e664064c1f04c728604f83c24cbc218/1.12.json", "http://resources.download.minecraft.net/");
             downloader.UseHashPath = true;
-            downloader.OnProgress += (sender, arg) => { Console.WriteLine((int)(arg.Progress * 100) / 100.0 + "%  " + arg.Status); };
+            downloader.OnProgress += (sender, arg) => { Logger.Log((int)(arg.Progress * 100) / 100.0 + "%  " + arg.Status); };
             downloader.DownloadTask().Wait();*/
 
             // Download patches
@@ -29,7 +30,12 @@ namespace TestApp
             /*Stopwatch timer = new Stopwatch();
             timer.Start();
             timer.Stop();
-            Console.WriteLine("Elapsed time: " + timer.ElapsedMilliseconds);*/
+            Logger.Log("Elapsed time: " + timer.ElapsedMilliseconds);*/
+
+            // totally download
+            ContentUpdater updater = new ContentUpdater();
+            updater.OnProgress += (s, a) => { Logger.Log((int)(a.Progress * 100) / 100.0 + "%  " + a.Status); };
+            updater.BeginDownload().Wait();
 
             //AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\resource-files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html");
         }
@@ -55,7 +61,7 @@ namespace TestApp
                         Directory.CreateDirectory(parent);
 
                     File.Copy(f, Path.Combine(dstPath, parent, hash));
-                    Console.WriteLine(name);
+                    Logger.Log(name);
                 }
                 foreach (string directory in Directory.GetDirectories(dir))
                 {
