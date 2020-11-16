@@ -57,5 +57,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+        <component:DownloadStatusBar Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                                     IsActive="{Binding IsShowDownloadStatus}" StatusText="{Binding DownloadStatus}" Margin="0,0,0,5" />
     </Grid>
 </UserControl>

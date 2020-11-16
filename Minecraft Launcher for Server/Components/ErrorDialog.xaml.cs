@@ -48,7 +48,7 @@ namespace Minecraft_Launcher_for_Server.Components
         public ErrorDialog()
         {
             _animation = new DoubleAnimation(0, 1, AnimationTimeSpan);
-            _animation.EasingFunction = CreateEase(EasingMode.EaseOut);
+            _animation.EasingFunction = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
             _animationRev = new DoubleAnimation(1, 0, AnimationTimeSpan);
             _animationRev.EasingFunction = _animation.EasingFunction;
 
@@ -80,13 +80,6 @@ namespace Minecraft_Launcher_for_Server.Components
                 timer.Stop();
             };
             timer.Start();
-        }
-
-        private QuadraticEase CreateEase(EasingMode mode)
-        {
-            QuadraticEase ease = new QuadraticEase();
-            ease.EasingMode = mode;
-            return ease;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

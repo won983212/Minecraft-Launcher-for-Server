@@ -9,14 +9,14 @@
     <Grid>
         <Grid.Resources>
             <Storyboard x:Key="SecondTabMouseEnterAnimation">
-                <DoubleAnimation Duration="0:0:0.1" To="200"
+                <DoubleAnimation Duration="0:0:0.2" To="200"
                                  Storyboard.TargetName="SecondTabImage"
                                  Storyboard.TargetProperty="Height">
                     <DoubleAnimation.EasingFunction>
                         <QuadraticEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
-                <DoubleAnimation Duration="0:0:0.1" To="0"
+                <DoubleAnimation Duration="0:0:0.2" To="0"
                                  Storyboard.TargetName="FirstTabImage"
                                  Storyboard.TargetProperty="Opacity">
                     <DoubleAnimation.EasingFunction>
@@ -25,14 +25,14 @@
                 </DoubleAnimation>
             </Storyboard>
             <Storyboard x:Key="SecondTabMouseLeaveAnimation">
-                <DoubleAnimation Duration="0:0:0.1" To="0"
+                <DoubleAnimation Duration="0:0:0.2" To="0"
                                  Storyboard.TargetName="SecondTabImage"
                                  Storyboard.TargetProperty="Height">
                     <DoubleAnimation.EasingFunction>
                         <QuadraticEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
-                <DoubleAnimation Duration="0:0:0.1" To="1"
+                <DoubleAnimation Duration="0:0:0.2" To="1"
                                  Storyboard.TargetName="FirstTabImage"
                                  Storyboard.TargetProperty="Opacity">
                     <DoubleAnimation.EasingFunction>
@@ -106,7 +106,7 @@
                 </Rectangle>
             </Grid>
             <Button Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0"
-                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth0" Command="{Binding StartCommand}"
                     FontSize="14pt" FontWeight="Bold" Height="60">게임 시작</Button>
         </Grid>
     </Grid>

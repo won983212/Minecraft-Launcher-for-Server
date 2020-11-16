@@ -73,6 +73,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\DownloadStatusBar.xaml.cs">
+      <DependentUpon>DownloadStatusBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,7 @@
       <DependentUpon>HomeTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Updater\HashDownloader.cs" />
+    <Compile Include="Updater\ContentUpdater.cs" />
     <Compile Include="ViewModels\TabHomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PageViewModelBase.cs" />
@@ -98,6 +102,10 @@
     <Compile Include="ViewModels\TabMainViewModel.cs" />
     <Compile Include="ViewModels\LoginFormViewModel.cs" />
     <Page Include="Components\BackgroundImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\DownloadStatusBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

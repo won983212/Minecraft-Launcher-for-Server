@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minecraft_Launcher_for_Server.Updater;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,7 +17,11 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 
     class TabMainViewModel : ParentViewModelBase
     {
+        private ContentUpdater _updater = new ContentUpdater();
+
         private int _currentPageIndex;
+        private bool _isShowDownloadStatus = false;
+        private string _downloadStatus = "";
 
         public int CurrentPageIndex
         {
@@ -24,6 +29,26 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             set
             {
                 UpdatePage(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsShowDownloadStatus
+        {
+            get => _isShowDownloadStatus;
+            private set
+            {
+                _isShowDownloadStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DownloadStatus
+        {
+            get => _downloadStatus;
+            private set
+            {
+                _downloadStatus = value;
                 OnPropertyChanged();
             }
         }
@@ -47,6 +72,17 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         {
             _currentPageIndex = pageIdx;
             CurrentPage = TabItems[pageIdx].ViewModel;
+        }
+
+        public void StartDownload()
+        {
+            IsShowDownloadStatus = true;
+            DownloadStatus = "다운로드 중..";
+        }
+
+        public bool CanStart()
+        {
+            return !_isShowDownloadStatus;
         }
     }
 }

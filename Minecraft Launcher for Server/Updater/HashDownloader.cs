@@ -82,8 +82,12 @@ namespace Minecraft_Launcher_for_Server.Updater
 
         public Task DownloadTask()
         {
-            _isRunning = true;
-            return Task.Factory.StartNew(() => Download());
+            if (!_isRunning)
+            {
+                _isRunning = true;
+                return Task.Factory.StartNew(() => Download());
+            }
+            return null;
         }
 
         private void UpdateStatus(double progress, string status)
