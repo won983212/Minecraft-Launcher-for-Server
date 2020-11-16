@@ -16,8 +16,27 @@ namespace TestApp
         MainClass()
         {
             // Assets downloader test
-            /*AssetsDownloader a = new AssetsDownloader(@"C:\Users\psvm\Desktop\assets", "https://launchermeta.mojang.com/mc/assets/1.12/67e29e024e664064c1f04c728604f83c24cbc218/1.12.json");
-            a.DownloadTask().Wait();*/
+            HashDownloader downloader = new HashDownloader(@"C:\Users\psvm\Desktop\assets", "https://launchermeta.mojang.com/mc/assets/1.12/67e29e024e664064c1f04c728604f83c24cbc218/1.12.json", "http://resources.download.minecraft.net/");
+            downloader.UseHashPath = true;
+            downloader.OnProgress += (sender, arg) => { Console.WriteLine((int)(arg.Progress * 100) / 100.0 + "%  " + arg.Status); };
+
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    if (Console.Read() == 'c')
+                    {
+                        Console.WriteLine("Canceling...");
+                        downloader.Cancel();
+                    }
+                }
+            });
+
+            downloader.DownloadTask().Wait();
+
+            // Download patches
+            /*HashDownloader downloader = new HashDownloader(@"C:\Users\psvm\Desktop\minecraft", "http://localhost/indexes.json", "http://localhost/resources/");
+            downloader.DownloadTask().Wait();*/
 
             // timer
             /*Stopwatch timer = new Stopwatch();
@@ -25,24 +44,24 @@ namespace TestApp
             timer.Stop();
             Console.WriteLine("Elapsed time: " + timer.ElapsedMilliseconds);*/
 
-            AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources");
+            //AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html");
         }
 
-        void AddIndexResources(string srcPath, string dstPath)
+        void AddIndexResources(string srcPath, string dstPath, string indexPath)
         {
             JObject json = new JObject();
             Queue<string> folders = new Queue<string>();
             SHA1Managed sha1 = new SHA1Managed();
             folders.Enqueue(srcPath);
 
-            while(folders.Count > 0)
+            while (folders.Count > 0)
             {
                 string dir = folders.Dequeue();
                 foreach (string f in Directory.GetFiles(dir))
                 {
                     string hash = SHA1(sha1, f);
                     string name = f.Substring(srcPath.Length + 1).Replace("\\", "/");
-                    json.Add(hash, new JObject(new JProperty("name", name), new JProperty("size", new FileInfo(f).Length)));
+                    json.Add(name, new JObject(new JProperty("hash", hash), new JProperty("size", new FileInfo(f).Length)));
 
                     string parent = Path.Combine(dstPath, hash.Substring(0, 2));
                     if (!Directory.Exists(parent))
@@ -57,7 +76,8 @@ namespace TestApp
                 }
             }
 
-            File.WriteAllText(Path.Combine(dstPath, "indexes.json"), json.ToString());
+            json = new JObject(new JProperty("objects", json));
+            File.WriteAllText(Path.Combine(indexPath, "indexes.json"), json.ToString());
             sha1.Dispose();
         }
 
