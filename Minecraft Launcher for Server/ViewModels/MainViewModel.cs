@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,10 +35,24 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
-        // TODO Server Connection Error
-        /* ShowErrorMessage("서버가 닫힘", "TEDVENT 서버와 연결할 수 없습니다.\n" +
+        public void ThrowIfAPIServerClosed()
+        {
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(URLs.InfoFile);
+                req.Timeout = 3000;
+                req.AllowAutoRedirect = false;
+                req.Method = "HEAD";
+                req.GetResponse().Dispose();
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e);
+                ShowErrorMessage("서버가 닫힘", "TEDVENT 서버와 연결할 수 없습니다.\n" +
                             "서버가 닫혀있거나, 인터넷 연결 문제일 수 있으니 다시 시도해보시길 바랍니다.\n" +
-                            "확인을 누르면 클라이언트가 종료됩니다.", null); */
+                            "확인을 누르면 클라이언트가 종료됩니다.", null);
+            }
+        }
 
         public MainViewModel()
         {

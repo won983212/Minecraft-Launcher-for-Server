@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server
 {
+    // TODO 향후 log / debug를 따로 콘솔창 만들어서 사용
     public static class Logger
     {
         public static void Log(object data)

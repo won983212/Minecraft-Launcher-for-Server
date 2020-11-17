@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Minecraft_Launcher_for_Server.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MinecraftServerIP" Type="System.String" Scope="Application">
+    <Setting Name="MinecraftServerIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
     </Setting>
-    <Setting Name="RestServerLocation" Type="System.String" Scope="Application">
+    <Setting Name="APIServerLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost</Value>
     </Setting>
-    <Setting Name="SavePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:/users/psvm/desktop/minecraft</Value>
+    <Setting Name="MinecraftDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

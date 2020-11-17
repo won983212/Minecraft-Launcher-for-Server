@@ -17,8 +17,6 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 
     class TabMainViewModel : ParentViewModelBase
     {
-        private ContentUpdater _updater = new ContentUpdater();
-
         private int _currentPageIndex;
         private bool _isShowDownloadStatus = false;
         private string _downloadStatus = "";

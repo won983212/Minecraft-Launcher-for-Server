@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BadAuthenticationException.cs" />
     <Compile Include="Components\DownloadStatusBar.xaml.cs">
       <DependentUpon>DownloadStatusBar.xaml</DependentUpon>
     </Compile>
@@ -81,6 +82,8 @@
     </Compile>
     <Compile Include="Components\NoSizeDecorator.cs" />
     <Compile Include="ErrorMessageObject.cs" />
+    <Compile Include="Updater\ServerStatus.cs" />
+    <Compile Include="URLs.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MinecraftAPI.cs" />
     <Compile Include="Pages\MainTabPage.xaml.cs">
@@ -89,6 +92,7 @@
     <Compile Include="Pages\LoginForm.xaml.cs">
       <DependentUpon>LoginForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.cs" />
     <Compile Include="Tabs\HomeTab.xaml.cs">
       <DependentUpon>HomeTab.xaml</DependentUpon>
     </Compile>

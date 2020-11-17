@@ -13,7 +13,6 @@ namespace Minecraft_Launcher_for_Server.Updater
     {
         private static Properties.Settings settings = Properties.Settings.Default;
 
-        // TODO APP SAVEPATH를 기본설정 추가
         public event EventHandler<ProgressArgs> OnProgress;
 
         public async Task BeginDownload()
@@ -21,18 +20,12 @@ namespace Minecraft_Launcher_for_Server.Updater
             UpdateProgress(0, "Launch Config 가져오는중..");
             string assetsURL = await RetrieveAssetsIndex();
 
-            HashDownloader assetsDownloader = new HashDownloader(Path.Combine(settings.SavePath, "assets"), 
-                assetsURL, 
-                "http://resources.download.minecraft.net/");
-
-            HashDownloader patchDownloader = new HashDownloader(settings.SavePath,
-                settings.RestServerLocation + "/indexes.json",
-                settings.RestServerLocation + "/resources");
-
+            HashDownloader assetsDownloader = new HashDownloader(Path.Combine(settings.MinecraftDir, "assets"), assetsURL, URLs.AssetsURL);
             assetsDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress / 2 + 10, "에셋파일: " + a.Status); };
             assetsDownloader.UseHashPath = true;
             await assetsDownloader.DownloadTask();
 
+            HashDownloader patchDownloader = new HashDownloader(settings.MinecraftDir, URLs.IndexFile, URLs.PatchFolder);
             patchDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress * 0.4 + 60, "패치파일: " + a.Status); };
             await patchDownloader.DownloadTask();
 
@@ -47,11 +40,11 @@ namespace Minecraft_Launcher_for_Server.Updater
                 UpdateProgress(0.1 * e.ProgressPercentage, "Launch Config 가져오는중");
             };
 
-            string cfg = await client.DownloadStringTaskAsync(settings.RestServerLocation + "/launch-config.json");
+            string cfg = await client.DownloadStringTaskAsync(URLs.LauncherConfig);
 
             // save cfg file
-            Directory.CreateDirectory(settings.SavePath);
-            File.WriteAllText(Path.Combine(settings.SavePath, "launch-config.json"), cfg);
+            Directory.CreateDirectory(settings.MinecraftDir);
+            File.WriteAllText(Path.Combine(settings.MinecraftDir, Path.GetFileName(URLs.LauncherConfig)), cfg);
 
             JObject cfgJson = JObject.Parse(cfg);
             return (string)cfgJson["assetIndex"]["url"];

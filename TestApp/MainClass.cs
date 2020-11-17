@@ -33,9 +33,20 @@ namespace TestApp
             Logger.Log("Elapsed time: " + timer.ElapsedMilliseconds);*/
 
             // totally download
-            ContentUpdater updater = new ContentUpdater();
+            /*ContentUpdater updater = new ContentUpdater();
             updater.OnProgress += (s, a) => { Logger.Log((int)(a.Progress * 100) / 100.0 + "%  " + a.Status); };
-            updater.BeginDownload().Wait();
+            updater.BeginDownload().Wait();*/
+
+            // server info
+            try
+            {
+                ServerStatus status = new ServerStatus();
+                status.RetrieveServerStatus().Wait();
+            } 
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             //AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\resource-files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html");
         }

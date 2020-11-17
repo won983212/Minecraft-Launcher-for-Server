@@ -23,33 +23,39 @@ namespace Minecraft_Launcher_for_Server.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
         public string MinecraftServerIP {
             get {
                 return ((string)(this["MinecraftServerIP"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost")]
-        public string RestServerLocation {
-            get {
-                return ((string)(this["RestServerLocation"]));
+            set {
+                this["MinecraftServerIP"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:/users/psvm/desktop/minecraft")]
-        public string SavePath {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost")]
+        public string APIServerLocation {
             get {
-                return ((string)(this["SavePath"]));
+                return ((string)(this["APIServerLocation"]));
             }
             set {
-                this["SavePath"] = value;
+                this["APIServerLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MinecraftDir {
+            get {
+                return ((string)(this["MinecraftDir"]));
+            }
+            set {
+                this["MinecraftDir"] = value;
             }
         }
     }
