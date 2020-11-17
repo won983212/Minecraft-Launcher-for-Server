@@ -33,7 +33,12 @@ namespace Minecraft_Launcher_for_Server.Pages
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbxUsername.Text))
+            LoginFormViewModel vm = DataContext as LoginFormViewModel;
+            if (!vm.CanLogin)
+            {
+                AddErrorSnackbar("서버와 연결되지 않았습니다.");
+            }
+            else if (string.IsNullOrWhiteSpace(tbxUsername.Text))
             {
                 AddErrorSnackbar("이메일을 입력해주세요!");
             }

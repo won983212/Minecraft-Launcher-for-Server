@@ -58,5 +58,17 @@ namespace Minecraft_Launcher_for_Server.Properties {
                 this["MinecraftDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
+        public string ClientVersion {
+            get {
+                return ((string)(this["ClientVersion"]));
+            }
+            set {
+                this["ClientVersion"] = value;
+            }
+        }
     }
 }

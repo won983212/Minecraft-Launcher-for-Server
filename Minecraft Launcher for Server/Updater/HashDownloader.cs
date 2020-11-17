@@ -150,7 +150,7 @@ namespace Minecraft_Launcher_for_Server.Updater
                     new ParallelOptions { MaxDegreeOfParallelism = 10, CancellationToken = _tknSrc.Token },
                     (file) => DownloadFile(parentFolder, file));
             } 
-            catch (OperationCanceledException e)
+            catch (OperationCanceledException)
             {
                 _isRunning = false;
                 _isCanceling = false;

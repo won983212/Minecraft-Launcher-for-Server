@@ -80,7 +80,9 @@
     <Compile Include="Components\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\MultiplexerPanel.cs" />
     <Compile Include="Components\NoSizeDecorator.cs" />
+    <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="ErrorMessageObject.cs" />
     <Compile Include="Updater\ServerStatus.cs" />
     <Compile Include="URLs.cs" />

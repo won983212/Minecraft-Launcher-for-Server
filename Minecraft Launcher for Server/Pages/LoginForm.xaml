@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
              xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+             xmlns:properties="clr-namespace:Minecraft_Launcher_for_Server.Properties"
+             xmlns:converter="clr-namespace:Minecraft_Launcher_for_Server.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="540" d:DesignWidth="860">
+    <UserControl.Resources>
+        <converter:EnumToIntConverter x:Key="EnumToIntConverter" />
+    </UserControl.Resources>
     <Grid>
         <!-- Background -->
         <component:BackgroundImage />
@@ -44,7 +49,9 @@
                     <materialDesign:PackIcon Kind="ArrowRight" Width="22" Height="22" />
                 </Button>
             </StackPanel>
-            <Grid Width="330" Height="400" Background="#99222222">
+            <component:MultiplexerPanel Width="330" Height="400" Background="#99222222" 
+                                        ActiveChildIndex="{Binding ConnectionState, Converter={StaticResource EnumToIntConverter}}">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="40" Height="40"/>
                 <StackPanel VerticalAlignment="Center" TextElement.Foreground="LightGray">
                     <TextBlock Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="12pt" Margin="40,10">
                         TEDVENT 화이트리스트
@@ -59,8 +66,24 @@
                         가입 신청
                     </Button>
                 </StackPanel>
-            </Grid>
+                <StackPanel VerticalAlignment="Center" TextElement.Foreground="LightGray" Margin="16,0" ToolTip="{Binding ConnectionErrorMessage}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Warning" Width="28" Height="28" Margin="10" VerticalAlignment="Center" />
+                        <TextBlock FontSize="10pt" VerticalAlignment="Center">
+                        <Run>서버와 연결할 수 없습니다.</Run><LineBreak/>
+                        <Run>인터넷에 문제가 있거나 서버가 닫혀있습니다.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                    <Button Style="{StaticResource MaterialDesignOutlinedButton}" BorderBrush="{StaticResource PrimaryHueMidBrush}" Width="100" 
+                            HorizontalAlignment="Left" FontSize="8pt" Margin="50,10" Command="{Binding ReconnectCommand}">
+                        재접속 시도
+                    </Button>
+                </StackPanel>
+            </component:MultiplexerPanel>
         </StackPanel>
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="LightGray" Margin="10">V0.1 Beta</TextBlock>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="LightGray" Margin="10">
+            <Run>v</Run>
+            <Run Text="{Binding ClientVersion, Source={x:Static properties:Settings.Default}}"/>
+        </TextBlock>
     </Grid>
 </UserControl>

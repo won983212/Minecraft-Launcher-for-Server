@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,23 @@ namespace Minecraft_Launcher_for_Server.Updater
         public int PlayersOnline { get; private set; }
         public int PlayersMax { get; private set; }
         public int Protocol { get; private set; }
+
+        public static bool IsActiveAPIServer()
+        {
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(URLs.InfoFile);
+                req.Timeout = 3000;
+                req.AllowAutoRedirect = false;
+                req.Method = "HEAD";
+                req.GetResponse().Dispose();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public async Task RetrieveServerStatus()
         {
