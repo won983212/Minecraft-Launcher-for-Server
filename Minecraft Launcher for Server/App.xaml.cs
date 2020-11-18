@@ -13,5 +13,11 @@ namespace Minecraft_Launcher_for_Server
     /// </summary>
     public partial class App : Application
     {
+        private MinecraftLauncherMain _main = new MinecraftLauncherMain();
+
+        public static MinecraftLauncherMain GetContext()
+        {
+            return ((App)Current)._main;
+        }
     }
 }

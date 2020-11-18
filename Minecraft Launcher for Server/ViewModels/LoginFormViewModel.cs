@@ -1,4 +1,5 @@
-﻿using Minecraft_Launcher_for_Server.Updater;
+﻿using Minecraft_Launcher_for_Server.Pages;
+using Minecraft_Launcher_for_Server.Updater;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,11 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         private ICommand _reconnectCommand;
         private ServerStatus _serverStatus = new ServerStatus();
 
+        // TODO disabled for testing
         public bool CanLogin
         {
-            get => _connectionState == RetrieveState.Loaded;
+            //get => _connectionState == RetrieveState.Loaded;
+            get => true;
         }
 
         public string ConnectionErrorMessage
@@ -55,6 +58,11 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             : base(root)
         {
             TestIfServerClosed();
+        }
+
+        public void LoginSuccess()
+        {
+            ((MainViewModel)RootViewModel).GoToPage(new TabMainViewModel(RootViewModel));
         }
 
         private async Task TestIfServerClosed()

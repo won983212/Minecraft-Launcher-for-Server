@@ -24,7 +24,108 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ContentControl Content="{Binding CurrentPage}" />
+        <!-- Content -->
+        <ContentControl Content="{Binding CurrentPage}"/>
+
+        <!-- Splash screen -->
+        <Grid x:Name="pnlSplash" Background="{StaticResource DarkBackground}" Visibility="Collapsed">
+            <Grid.Resources>
+                <QuarticEase x:Key="ease" EasingMode="EaseOut" />
+            </Grid.Resources>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SplashAnimation}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 From="1" To="0" Duration="0:0:0.8" BeginTime="0:0:2.5" EasingFunction="{StaticResource ease}"/>
+                                        <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:3.3" Value="{x:Static Visibility.Collapsed}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <StackPanel x:Name="pnlLogo" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="Fant">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SplashAnimation}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                                                             From="0" To="400" Duration="0:0:0.5" BeginTime="0:0:2.5" EasingFunction="{StaticResource ease}"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="0"/>
+                </StackPanel.RenderTransform>
+                <Border x:Name="imgLogo" Background="{StaticResource DarkBackground}" Panel.ZIndex="1" Margin="8" RenderTransformOrigin="0.5,0.5">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SplashAnimation}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].ScaleX"
+                                                                 From="0" To="1" Duration="0:0:0.8" EasingFunction="{StaticResource ease}"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                                                                 From="0" To="1" Duration="0:0:0.8" EasingFunction="{StaticResource ease}"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].Angle"
+                                                                 From="0" To="360" Duration="0:0:1" EasingFunction="{StaticResource ease}"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                            <RotateTransform Angle="0" />
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <Image Source="/Resources/logo.png" Width="150" Height="150"/>
+                </Border>
+                <Image x:Name="imgLogoText" Source="/Resources/logoText.png" Width="90" Opacity="0">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SplashAnimation}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                 From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:1" EasingFunction="{StaticResource ease}"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                                                                 From="-20" To="0" Duration="0:0:0.8" BeginTime="0:0:1" EasingFunction="{StaticResource ease}"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                    <Image.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Image.RenderTransform>
+                </Image>
+            </StackPanel>
+        </Grid>
 
         <!-- ErrorDialog -->
         <component:ErrorDialog x:Name="dialogError" ErrorObject="{Binding ErrorInfo}" IsShow="{Binding ErrorVisible, Mode=TwoWay}"/>
@@ -41,12 +142,12 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
             <!-- Config button -->
-            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30">
+            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" ToolTip="설정">
                 <materialDesign:PackIcon Kind="Settings" Foreground="White" Width="18" Height="18" />
             </Button>
 
             <!-- Exit button -->
-            <Button Style="{StaticResource MaterialDesignIconButton}" Click="Exit_Click" Width="30" Height="30">
+            <Button Style="{StaticResource MaterialDesignIconButton}" Click="Exit_Click" Width="30" Height="30" ToolTip="종료">
                 <materialDesign:PackIcon Kind="Close" Foreground="White" Width="18" Height="18" />
             </Button>
         </StackPanel>

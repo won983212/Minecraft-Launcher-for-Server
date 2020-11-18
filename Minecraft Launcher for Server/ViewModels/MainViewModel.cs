@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf.Transitions;
 using Minecraft_Launcher_for_Server.Updater;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
     {
         private ErrorMessageObject _errorInfo;
         private bool _errorVisible = false;
+        private bool _splashAnimation = false;
 
         public SnackbarMessageQueue SnackMessages { get; private set; }
 
@@ -36,13 +38,13 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
-        public void ThrowIfAPIServerClosed()
+        public bool SplashAnimation
         {
-            if (!ServerStatus.IsActiveAPIServer())
+            get => _splashAnimation;
+            set
             {
-                ShowErrorMessage("서버가 닫힘", "TEDVENT 서버와 연결할 수 없습니다.\n" +
-                            "서버가 닫혀있거나, 인터넷 연결 문제일 수 있으니 다시 시도해보시길 바랍니다.\n" +
-                            "확인을 누르면 클라이언트가 종료됩니다.", null);
+                _splashAnimation = value;
+                OnPropertyChanged();
             }
         }
 
@@ -51,6 +53,12 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             CurrentPage = new LoginFormViewModel(this);
             SnackMessages = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
             ErrorInfo = new ErrorMessageObject();
+        }
+
+        public void GoToPage(PageViewModelBase nextPage)
+        {
+            CurrentPage = nextPage;
+            SplashAnimation = true;
         }
 
         public void ShowErrorMessage(string title, string message, Action callback)
@@ -62,6 +70,16 @@ namespace Minecraft_Launcher_for_Server.ViewModels
                 Callback = callback
             };
             ErrorVisible = true;
+        }
+
+        public void ThrowIfAPIServerClosed()
+        {
+            if (!ServerStatus.IsActiveAPIServer())
+            {
+                ShowErrorMessage("서버가 닫힘", "TEDVENT 서버와 연결할 수 없습니다.\n" +
+                            "서버가 닫혀있거나, 인터넷 연결 문제일 수 있으니 다시 시도해보시길 바랍니다.\n" +
+                            "확인을 누르면 클라이언트가 종료됩니다.", null);
+            }
         }
 
         public void AddErrorSnackbar(string message)

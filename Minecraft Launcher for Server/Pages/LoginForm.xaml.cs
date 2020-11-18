@@ -33,6 +33,19 @@ namespace Minecraft_Launcher_for_Server.Pages
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
+            TryLogin();
+        }
+
+        private void tbx_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                TryLogin();
+            }
+        }
+
+        private void TryLogin()
+        {
             LoginFormViewModel vm = DataContext as LoginFormViewModel;
             if (!vm.CanLogin)
             {
@@ -72,7 +85,8 @@ namespace Minecraft_Launcher_for_Server.Pages
 
             if (res != null)
             {
-                // TODO Login successful
+                App.GetContext().AuthInfo = res;
+                ((LoginFormViewModel)DataContext).LoginSuccess();
             }
         }
     }

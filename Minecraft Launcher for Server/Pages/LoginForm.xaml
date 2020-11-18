@@ -30,9 +30,11 @@
                 </TextBlock>
                 <TextBox x:Name="tbxUsername"
                     Margin="35,20,35,0"
+                    KeyDown="tbx_KeyDown"
                     materialDesign:HintAssist.Hint="Email" />
                 <component:FloatingHintPasswordBox x:Name="tbxPassword"
                     Margin="35,15,35,20"
+                    KeyDown="tbx_KeyDown"
                     materialDesign:HintAssist.Hint="Password" />
                 <CheckBox 
                     IsChecked="True"
