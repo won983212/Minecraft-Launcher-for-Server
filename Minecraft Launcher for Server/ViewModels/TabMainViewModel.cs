@@ -17,10 +17,14 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 
     class TabMainViewModel : ParentViewModelBase
     {
+        private Launcher _launcher = new Launcher();
         private int _currentPageIndex;
         private bool _isShowDownloadStatus = false;
         private double _downloadProgress = 0;
         private string _downloadStatus = "";
+        private bool _canStart = true;
+
+        public event EventHandler DownloadCompleted;
 
         public int CurrentPageIndex
         {
@@ -75,6 +79,10 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             TabItems.Add(new TabItem() { Title = "가이드", Icon = "ImportContacts", ViewModel = null });
             TabItems.Add(new TabItem() { Title = "프로필", Icon = "Account", ViewModel = null });
             UpdatePage(0);
+
+            _launcher.OnLog += (s, t) => Logger.Log(t);
+            _launcher.OnError += (s, t) => Logger.Error(t);
+            _launcher.OnExited += (s, t) => Logger.Log(" Exited (code: " + t + ")");
         }
 
         private void UpdatePage(int pageIdx)
@@ -86,6 +94,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         public void StartDownload()
         {
             IsShowDownloadStatus = true;
+            _canStart = false;
             DownloadStatus = "다운로드 중..";
             DownloadProgress = 0;
 
@@ -103,12 +112,22 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             {
                 IsShowDownloadStatus = false;
                 App.GetContext().UpdatePatchVersion();
+                DownloadCompleted?.Invoke(this, null);
+                StartMinecraft();
             }
+        }
+
+        public async Task StartMinecraft()
+        {
+            await _launcher.Start();
+            _canStart = true;
+            if (!Properties.Settings.Default.UseLogging)
+                App.Current.Shutdown(0);
         }
 
         public bool CanStart()
         {
-            return !_isShowDownloadStatus;
+            return _canStart && !_launcher.IsRunning;
         }
     }
 }
