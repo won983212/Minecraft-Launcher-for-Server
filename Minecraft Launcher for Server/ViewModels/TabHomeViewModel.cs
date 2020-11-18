@@ -10,6 +10,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 {
     class TabHomeViewModel : PageViewModelBase
     {
+        private Launcher _launcher = new Launcher();
         private string _startText = "게임 시작";
         private ICommand _startCommand;
         private LauncherState _launchState;
@@ -40,6 +41,9 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             : base(parent)
         {
             UpdateStartButton();
+            _launcher.OnLog += (s, t) => Logger.Log(t);
+            _launcher.OnError += (s, t) => Logger.Error(t);
+            _launcher.OnExited += (s, t) => Logger.Log(" Exited (code: " + t + ")");
         }
 
         private void UpdateStartButton()
@@ -59,6 +63,13 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
+        private async Task StartMinecraft()
+        {
+            await _launcher.Start();
+            if (!Properties.Settings.Default.UseLogging)
+                App.Current.Shutdown(0);
+        }
+
         private void OnStartClick(object arg)
         {
             if (_launchState != LauncherState.CanStart)
@@ -68,13 +79,13 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
             else
             {
-                // TODO Start minecraft
+                StartMinecraft();
             }
         }
 
         private bool CanStart(object arg)
         {
-            return (RootViewModel as TabMainViewModel).CanStart();
+            return (RootViewModel as TabMainViewModel).CanStart() && !_launcher.IsRunning;
         }
     }
 }

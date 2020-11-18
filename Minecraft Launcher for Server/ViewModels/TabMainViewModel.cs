@@ -87,8 +87,23 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         {
             IsShowDownloadStatus = true;
             DownloadStatus = "다운로드 중..";
+            DownloadProgress = 0;
 
-            // TODO Start update process
+            ContentUpdater updater = new ContentUpdater();
+            updater.OnProgress += Updater_OnProgress;
+            updater.BeginDownload();
+        }
+
+        private void Updater_OnProgress(object sender, ProgressArgs e)
+        {
+            DownloadStatus = e.Status;
+            DownloadProgress = e.Progress;
+
+            if(e.Progress >= 100)
+            {
+                IsShowDownloadStatus = false;
+                App.GetContext().UpdatePatchVersion();
+            }
         }
 
         public bool CanStart()

@@ -84,6 +84,7 @@
     <Compile Include="Components\NoSizeDecorator.cs" />
     <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="ErrorMessageObject.cs" />
+    <Compile Include="Launcher.cs" />
     <Compile Include="MinecraftLauncherMain.cs" />
     <Compile Include="Updater\ServerStatus.cs" />
     <Compile Include="URLs.cs" />

@@ -13,26 +13,53 @@ namespace Minecraft_Launcher_for_Server.Updater
     {
         private static Properties.Settings settings = Properties.Settings.Default;
 
+        private volatile HashDownloader _currentDownloader;
         public event EventHandler<ProgressArgs> OnProgress;
 
         public async Task BeginDownload()
         {
-            UpdateProgress(0, "Launch Config 가져오는중..");
-            string assetsURL = await RetrieveAssetsIndex();
+            try
+            {
+                UpdateProgress(0, "Launch Config 가져오는중..");
+                string assetsURL = await RetrieveAssetsIndex();
 
-            HashDownloader assetsDownloader = new HashDownloader(Path.Combine(settings.MinecraftDir, "assets"), assetsURL, URLs.AssetsURL);
-            assetsDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress / 2 + 10, "에셋파일: " + a.Status); };
-            assetsDownloader.UseHashPath = true;
-            await assetsDownloader.DownloadTask();
+                _currentDownloader = new HashDownloader(Path.Combine(settings.MinecraftDir, "assets"), assetsURL, URLs.AssetsURL);
+                _currentDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress / 2 + 10, "에셋파일: " + a.Status); };
+                _currentDownloader.UseHashPath = true;
+                await _currentDownloader.DownloadTask();
+                CheckDownloadTaskCancelled();
 
-            HashDownloader patchDownloader = new HashDownloader(settings.MinecraftDir, URLs.IndexFile, URLs.PatchFolder);
-            patchDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress * 0.4 + 60, "패치파일: " + a.Status); };
-            await patchDownloader.DownloadTask();
+                _currentDownloader = new HashDownloader(settings.MinecraftDir, URLs.IndexFile, URLs.PatchFolder);
+                _currentDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress * 0.4 + 60, "패치파일: " + a.Status); };
+                await _currentDownloader.DownloadTask();
+                CheckDownloadTaskCancelled();
 
-            UpdateProgress(99, "버전 정보 수정중..");
-            await Task.Factory.StartNew(UpdatePatchVersion);
+                _currentDownloader = null;
 
-            UpdateProgress(100, "설치완료");
+                UpdateProgress(99, "버전 정보 수정중..");
+                await Task.Factory.StartNew(UpdatePatchVersion);
+
+                UpdateProgress(100, "설치완료");
+            }
+            catch (TaskCanceledException)
+            {
+                UpdateProgress(100, "작업 취소됨");
+            }
+        }
+
+        private void CheckDownloadTaskCancelled()
+        {
+            if(_currentDownloader == null)
+                throw new TaskCanceledException();
+        }
+
+        public void Cancel()
+        {
+            if(_currentDownloader != null)
+            {
+                _currentDownloader.Cancel();
+                _currentDownloader = null;
+            }
         }
 
         private void UpdatePatchVersion()

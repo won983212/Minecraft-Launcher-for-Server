@@ -24,11 +24,16 @@ namespace Minecraft_Launcher_for_Server
 
         public MinecraftLauncherMain()
         {
+            UpdatePatchVersion();
+        }
+
+        public void UpdatePatchVersion()
+        {
             string filePath = Path.Combine(Properties.Settings.Default.MinecraftDir, "version");
             if (File.Exists(filePath))
             {
                 PatchVersion = File.ReadAllText(filePath);
-            } 
+            }
             else
             {
                 PatchVersion = "Unknown";

@@ -38,7 +38,7 @@ namespace TestApp
             updater.BeginDownload().Wait();*/
 
             // server info
-            try
+            /*try
             {
                 ServerStatus status = new ServerStatus();
                 status.RetrieveServerStatus().Wait();
@@ -46,7 +46,14 @@ namespace TestApp
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
+            }*/
+
+            // Launcher
+            /*Launcher tt = new Launcher();
+            tt.OnLog += (s, a) => { Console.WriteLine("[LOG] " + a); };
+            tt.OnError += (s, a) => { Console.WriteLine("[Error] " + a); };
+            tt.OnExited += (s, a) => { Console.WriteLine("Exited: " + a); };
+            tt.Start().Wait();*/
 
             //AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\resource-files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html");
         }

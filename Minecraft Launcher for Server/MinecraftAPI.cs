@@ -13,6 +13,7 @@ namespace Minecraft_Launcher_for_Server
     public class AuthResponse
     {
         public string Username { get; private set; }
+        public string UUID { get; private set; }
         public string AccessToken { get; private set; }
         public string ClientToken { get; private set; }
 
@@ -21,6 +22,7 @@ namespace Minecraft_Launcher_for_Server
             AuthResponse ret = new AuthResponse
             {
                 Username = (string)obj["selectedProfile"]["name"],
+                UUID = (string)obj["selectedProfile"]["id"],
                 AccessToken = (string)obj["accessToken"],
                 ClientToken = (string)obj["clientToken"]
             };

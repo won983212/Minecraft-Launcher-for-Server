@@ -11,14 +11,22 @@ namespace Minecraft_Launcher_for_Server
     {
         public static void Log(object data)
         {
-            Console.WriteLine(data.ToString());
+            Console.WriteLine("[Log] " + data);
         }
 
         public static void Debug(object data)
         {
 #if DEBUG
-            Console.WriteLine(data.ToString());
+            if (data == null)
+                Console.WriteLine();
+            else
+                Console.WriteLine("[DEBUG] " + data);
 #endif
+        }
+
+        public static void Error(object data)
+        {
+            Console.WriteLine("[Error] " + data);
         }
     }
 }

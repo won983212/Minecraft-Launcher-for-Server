@@ -76,5 +76,41 @@ namespace Minecraft_Launcher_for_Server.Properties {
                 return ((string)(this["ServerName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseLogging {
+            get {
+                return ((bool)(this["UseLogging"]));
+            }
+            set {
+                this["UseLogging"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Arguments {
+            get {
+                return ((string)(this["Arguments"]));
+            }
+            set {
+                this["Arguments"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int MemorySize {
+            get {
+                return ((int)(this["MemorySize"]));
+            }
+            set {
+                this["MemorySize"] = value;
+            }
+        }
     }
 }

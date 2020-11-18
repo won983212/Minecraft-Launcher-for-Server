@@ -73,7 +73,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             if (!_isRunning)
             {
                 _isRunning = true;
-                return Task.Factory.StartNew(() => Download());
+                return Task.Factory.StartNew(Download);
             }
             return null;
         }

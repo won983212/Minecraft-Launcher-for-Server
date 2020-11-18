@@ -17,5 +17,14 @@
     <Setting Name="ServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Tedvent</Value>
     </Setting>
+    <Setting Name="UseLogging" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Arguments" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MemorySize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
