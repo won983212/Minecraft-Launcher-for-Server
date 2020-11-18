@@ -19,6 +19,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
     {
         private int _currentPageIndex;
         private bool _isShowDownloadStatus = false;
+        private double _downloadProgress = 0;
         private string _downloadStatus = "";
 
         public int CurrentPageIndex
@@ -37,6 +38,16 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             private set
             {
                 _isShowDownloadStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double DownloadProgress
+        {
+            get => _downloadProgress;
+            private set
+            {
+                _downloadProgress = value;
                 OnPropertyChanged();
             }
         }
@@ -76,6 +87,8 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         {
             IsShowDownloadStatus = true;
             DownloadStatus = "다운로드 중..";
+
+            // TODO Start update process
         }
 
         public bool CanStart()

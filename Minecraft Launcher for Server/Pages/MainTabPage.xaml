@@ -8,7 +8,7 @@
              xmlns:tab="clr-namespace:Minecraft_Launcher_for_Server.Tabs"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="860">
+             d:DesignHeight="800" d:DesignWidth="1280">
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type viewmodel:TabHomeViewModel}">
@@ -28,21 +28,21 @@
                 <VisualBrush Visual="{Binding ElementName=imgBackground}" Stretch="None" Viewbox="0,0,0.23,1" />
             </Rectangle.Fill>
         </Rectangle>
-        <Grid Background="#e6181818" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="200">
+        <Grid Background="#e6181818" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="300">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Image Source="/Resources/logoText.png" Height="20" Margin="15" RenderOptions.BitmapScalingMode="Fant" />
+            <Image Source="/Resources/logoText.png" Height="30" Margin="22" RenderOptions.BitmapScalingMode="Fant" />
             <Separator Grid.Row="1" Margin="15,0" Background="#ff707070" />
-            <ListBox Grid.Row="2" Margin="15,10" ItemsSource="{Binding TabItems}" SelectedIndex="{Binding CurrentPageIndex}">
+            <ListBox Grid.Row="2" Margin="22,15" ItemsSource="{Binding TabItems}" SelectedIndex="{Binding CurrentPageIndex}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="{Binding Icon}" Width="18" Height="18" Margin="6,3,20,3" />
-                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="8pt"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <materialDesign:PackIcon Kind="{Binding Icon}" Width="24" Height="24" Margin="6,3,20,3" />
+                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="10pt"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -57,7 +57,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <component:DownloadStatusBar Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+        <component:DownloadStatusBar Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" ProgressValue="{Binding DownloadProgress}"
                                      IsActive="{Binding IsShowDownloadStatus}" StatusText="{Binding DownloadStatus}" Margin="0,0,0,5" />
     </Grid>
 </UserControl>

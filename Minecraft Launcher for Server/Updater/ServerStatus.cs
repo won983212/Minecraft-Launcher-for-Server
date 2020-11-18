@@ -10,14 +10,24 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.Updater
 {
+    public enum RetrieveState
+    {
+        Processing, Loaded, Error
+    }
+
     public class ServerStatus
     {
         private MemoryStream ms = new MemoryStream();
 
+        // minecraft server status
         public string Motd { get; private set; }
         public int PlayersOnline { get; private set; }
         public int PlayersMax { get; private set; }
         public int Protocol { get; private set; }
+
+        // api server status
+        public string PatchVersion { get; private set; }
+        public string ClientVersion { get; private set; }
 
         public static bool IsActiveAPIServer()
         {
@@ -33,6 +43,17 @@ namespace Minecraft_Launcher_for_Server.Updater
             catch
             {
                 return false;
+            }
+        }
+
+        public async Task RetrieveAPIServerVersion()
+        {
+            using (WebClient client = new WebClient())
+            {
+                string data = await client.DownloadStringTaskAsync(URLs.InfoFile);
+                JObject obj = JObject.Parse(data);
+                PatchVersion = (string)obj["patchVersion"];
+                ClientVersion = (string)obj["clientVersion"];
             }
         }
 

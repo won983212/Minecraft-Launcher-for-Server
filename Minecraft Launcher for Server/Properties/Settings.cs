@@ -25,7 +25,8 @@ namespace Minecraft_Launcher_for_Server.Properties
 
 			if (!Directory.Exists(Default.MinecraftDir))
 			{
-				Default.MinecraftDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "minecraft_tedvent");
+				string folderName = "minecraft_" + Default.ServerName.ToLower();
+				Default.MinecraftDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName);
 				Default.Save();
 			}
 		}

@@ -50,7 +50,9 @@ namespace Minecraft_Launcher_for_Server.ViewModels
 
         public MainViewModel()
         {
+            // TODO TEST: 탭 작업중이라 로그인 잠시 끈다
             CurrentPage = new LoginFormViewModel(this);
+            //CurrentPage = new TabMainViewModel(this);
             SnackMessages = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
             ErrorInfo = new ErrorMessageObject();
         }

@@ -59,15 +59,21 @@ namespace Minecraft_Launcher_for_Server.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
         public string ClientVersion {
             get {
                 return ((string)(this["ClientVersion"]));
             }
-            set {
-                this["ClientVersion"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tedvent")]
+        public string ServerName {
+            get {
+                return ((string)(this["ServerName"]));
             }
         }
     }

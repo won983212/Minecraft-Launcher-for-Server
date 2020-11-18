@@ -23,13 +23,19 @@ namespace Minecraft_Launcher_for_Server.Components
     {
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register("IsActive",
             typeof(bool), typeof(DownloadStatusBar), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnIsActiveChanged)));
-
+        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(DownloadStatusBar));
         public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Register("StatusText", typeof(string), typeof(DownloadStatusBar));
 
         public bool IsActive
         {
             get => (bool)GetValue(IsActiveProperty);
             set { SetValue(IsActiveProperty, value); }
+        }
+
+        public double ProgressValue
+        {
+            get => (double)GetValue(ProgressValueProperty);
+            set { SetValue(ProgressValueProperty, value); }
         }
 
         public string StatusText
@@ -48,7 +54,7 @@ namespace Minecraft_Launcher_for_Server.Components
             _animation.EasingFunction = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
             _animationRev = new DoubleAnimation(0, 60, AnimationTimeSpan);
             _animationRev.EasingFunction = _animation.EasingFunction;
-
+            _animationRev.Completed += _animationRev_Completed;
             InitializeComponent();
         }
 
@@ -61,15 +67,11 @@ namespace Minecraft_Launcher_for_Server.Components
         private void CloseMessage()
         {
             translatePanel.BeginAnimation(TranslateTransform.YProperty, _animationRev);
+        }
 
-            /*var timer = new DispatcherTimer { Interval = AnimationTimeSpan };
-            timer.Tick += (s, args) =>
-            {
-                Visibility = Visibility.Collapsed;
-                IsShow = false;
-                timer.Stop();
-            };
-            timer.Start();*/
+        private void _animationRev_Completed(object sender, EventArgs e)
+        {
+            Visibility = Visibility.Collapsed;
         }
 
         public static void OnIsActiveChanged(DependencyObject obj, DependencyPropertyChangedEventArgs arg)

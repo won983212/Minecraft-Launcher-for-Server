@@ -29,7 +29,21 @@ namespace Minecraft_Launcher_for_Server.Updater
             patchDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress * 0.4 + 60, "패치파일: " + a.Status); };
             await patchDownloader.DownloadTask();
 
+            UpdateProgress(99, "버전 정보 수정중..");
+            await Task.Factory.StartNew(UpdatePatchVersion);
+
             UpdateProgress(100, "설치완료");
+        }
+
+        private void UpdatePatchVersion()
+        {
+            string patchVersionPath = Path.Combine(settings.MinecraftDir, "version");
+            using(WebClient client = new WebClient())
+            {
+                string data = client.DownloadString(URLs.InfoFile);
+                JObject json = JObject.Parse(data);
+                File.WriteAllText(patchVersionPath, (string)json["patchVersion"]);
+            }
         }
 
         private async Task<string> RetrieveAssetsIndex()
@@ -41,6 +55,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             };
 
             string cfg = await client.DownloadStringTaskAsync(URLs.LauncherConfig);
+            client.Dispose();
 
             // save cfg file
             Directory.CreateDirectory(settings.MinecraftDir);

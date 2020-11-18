@@ -85,7 +85,7 @@
         </StackPanel>
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="LightGray" Margin="10">
             <Run>v</Run>
-            <Run Text="{Binding ClientVersion, Source={x:Static properties:Settings.Default}}"/>
+            <Run Text="{Binding ClientVersion, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
         </TextBlock>
     </Grid>
 </UserControl>

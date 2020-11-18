@@ -10,19 +10,13 @@ using System.Windows.Input;
 
 namespace Minecraft_Launcher_for_Server.ViewModels
 {
-    public enum RetrieveState
-    {
-        Processing, Loaded, Error
-    }
-
     class LoginFormViewModel : PageViewModelBase
     {
         private RetrieveState _connectionState = RetrieveState.Processing;
         private string _connectionErrorMessage = "";
         private ICommand _reconnectCommand;
-        private ServerStatus _serverStatus = new ServerStatus();
 
-        // TODO disabled for testing
+        // TODO TEST: 매번 서버열기 귀찮으니 잠시 비활성화
         public bool CanLogin
         {
             //get => _connectionState == RetrieveState.Loaded;
@@ -68,25 +62,25 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         private async Task TestIfServerClosed()
         {
             ConnectionState = RetrieveState.Processing;
+            ServerStatus status = App.GetContext().ServerStatus;
+            string messagePrefix = "API 서버 연결중 오류: ";
+
             try
             {
-                bool result = await Task.Factory.StartNew(ServerStatus.IsActiveAPIServer);
-                if (!result)
-                {
-                    ConnectionState = RetrieveState.Error;
-                    ConnectionErrorMessage = "API서버와 연결할 수 없습니다.";
-                }
-                else
-                {
-                    await _serverStatus.RetrieveServerStatus();
-                    ConnectionState = RetrieveState.Loaded;
-                }
+                bool isActive = await Task.Factory.StartNew(ServerStatus.IsActiveAPIServer);
+                if (!isActive)
+                    throw new Exception("API 서버와 연결할 수 없습니다.");
+                await status.RetrieveAPIServerVersion();
+
+                messagePrefix = "마인크래프트 서버 연결중 오류: ";
+                await status.RetrieveServerStatus();
+                ConnectionState = RetrieveState.Loaded;
             }
-            catch (SocketException e)
+            catch (Exception e)
             {
                 Logger.Debug(e);
                 ConnectionState = RetrieveState.Error;
-                ConnectionErrorMessage = e.Message;
+                ConnectionErrorMessage = messagePrefix + e.Message;
             }
         }
     }

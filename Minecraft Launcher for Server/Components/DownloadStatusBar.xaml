@@ -11,9 +11,9 @@
         <Border.RenderTransform>
             <TranslateTransform x:Name="translatePanel" Y="60"/>
         </Border.RenderTransform>
-        <StackPanel>
-            <TextBlock Margin="8" FontWeight="Light" Foreground="LightGray" HorizontalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=StatusText}"/>
-            <ProgressBar Margin="8,0,8,4" Width="280" Value="10" Background="#ff101010" Foreground="{StaticResource PrimaryHueMidBrush}"
+        <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+            <TextBlock Margin="8" FontWeight="Light" Foreground="LightGray" HorizontalAlignment="Center" Text="{Binding StatusText}"/>
+            <ProgressBar Margin="8,0,8,4" Width="280" Value="{Binding ProgressValue}" Background="#ff101010" Foreground="{StaticResource PrimaryHueMidBrush}"
                              BorderThickness="0" materialDesign:TransitionAssist.DisableTransitions="True" />
         </StackPanel>
     </Border>

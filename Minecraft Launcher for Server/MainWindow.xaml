@@ -11,7 +11,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown"
-        Title="MainWindow" Height="540" Width="860">
+        Title="MainWindow" Height="800" Width="1280">
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
