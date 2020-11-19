@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server
 {
-    public class AuthResponse
+    public class AuthInfo
     {
         public string Username { get; private set; }
         public string UUID { get; private set; }
         public string AccessToken { get; private set; }
         public string ClientToken { get; private set; }
 
-        internal static AuthResponse CreateFromJson(JObject obj)
+        internal static AuthInfo CreateFromJson(JObject obj)
         {
-            AuthResponse ret = new AuthResponse
+            AuthInfo ret = new AuthInfo
             {
                 Username = (string)obj["selectedProfile"]["name"],
                 UUID = (string)obj["selectedProfile"]["id"],
@@ -32,21 +32,21 @@ namespace Minecraft_Launcher_for_Server
 
     public static class MinecraftAPI
     {
-        public static AuthResponse DoAuth(string username, string password)
+        public static AuthInfo DoAuth(string username, string password)
         {
             string data = "{ \"agent\": { \"name\": \"Minecraft\", \"version\": 1 }, \"username\": \"" + username + "\", \"password\": \"" + password + "\" }";
-            return AuthResponse.CreateFromJson(SendPostRequest("https://authserver.mojang.com/authenticate", data));
+            return AuthInfo.CreateFromJson(SendPostRequest("https://authserver.mojang.com/authenticate", data));
         }
 
-        public static AuthResponse RefreshAccessToken(string accessToken, string clientToken)
+        public static AuthInfo RefreshAccessToken(string accessToken, string clientToken)
         {
             string data = "{ \"accessToken\": \"" + accessToken + "\", \"clientToken\": \"" + clientToken + "\" }";
-            return AuthResponse.CreateFromJson(SendPostRequest("https://authserver.mojang.com/refresh", data));
+            return AuthInfo.CreateFromJson(SendPostRequest("https://authserver.mojang.com/refresh", data));
         }
 
-        public static bool ValidateAccessToken(string accessToken)
+        public static bool ValidateAccessToken(string accessToken, string clientToken)
         {
-            string data = "{ \"accessToken\": \"" + accessToken + "\" }";
+            string data = "{ \"accessToken\": \"" + accessToken + "\", \"clientToken\": \"" + clientToken + "\" }";
             bool ret;
 
             try

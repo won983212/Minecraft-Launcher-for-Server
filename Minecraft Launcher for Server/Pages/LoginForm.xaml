@@ -9,7 +9,7 @@
              xmlns:converter="clr-namespace:Minecraft_Launcher_for_Server.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="860">
+             d:DesignHeight="800" d:DesignWidth="1280">
     <UserControl.Resources>
         <converter:EnumToIntConverter x:Key="EnumToIntConverter" />
     </UserControl.Resources>
@@ -37,7 +37,8 @@
                     KeyDown="tbx_KeyDown"
                     materialDesign:HintAssist.Hint="Password" />
                 <CheckBox 
-                    IsChecked="True"
+                    x:Name="cbxKeepLogin"
+                    IsChecked="False"
                     Margin="35,0,0,40"
                     FontSize="8pt"
                     Foreground="LightGray"

@@ -1,4 +1,6 @@
-﻿using Minecraft_Launcher_for_Server.ViewModels;
+﻿using Minecraft_Launcher_for_Server.Properties;
+using Minecraft_Launcher_for_Server.ViewModels;
+using Minecraft_Launcher_for_Server.ViewModels.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +23,12 @@ namespace Minecraft_Launcher_for_Server.Pages
      */
     public partial class LoginForm : UserControl
     {
+        private static readonly AuthInfoStorage _authStorage = App.GetContext().AuthInfoStorage;
+
         public LoginForm()
         {
             InitializeComponent();
+            CheckKeepLogin();
         }
 
         private void AddErrorSnackbar(string message)
@@ -65,13 +70,35 @@ namespace Minecraft_Launcher_for_Server.Pages
             }
         }
 
+        private async Task CheckKeepLogin()
+        {
+            if (_authStorage.HasTokenData())
+            {
+                loginForm.IsEnabled = false;
+                try
+                {
+                    AuthInfo auth = await Task.Factory.StartNew(() => MinecraftAPI.RefreshAccessToken(_authStorage.AccessToken, _authStorage.ClientToken));
+                    _authStorage.AccessToken = auth.AccessToken;
+                    _authStorage.ClientToken = auth.ClientToken;
+                    _authStorage.Save();
+                    Login(auth);
+                }
+                catch 
+                {
+                    _authStorage.Clear();
+                }
+            }
+
+            loginForm.IsEnabled = true;
+        }
+
         private async void DoAuth()
         {
             loginForm.IsEnabled = false;
             string id = tbxUsername.Text;
             string pass = tbxPassword.Password;
 
-            AuthResponse res = null;
+            AuthInfo res = null;
             try
             {
                 res = await Task.Factory.StartNew(() => MinecraftAPI.DoAuth(id, pass));
@@ -85,9 +112,20 @@ namespace Minecraft_Launcher_for_Server.Pages
 
             if (res != null)
             {
-                App.GetContext().AuthInfo = res;
-                ((LoginFormViewModel)DataContext).LoginSuccess();
+                if (cbxKeepLogin.IsChecked == true)
+                {
+                    _authStorage.AccessToken = res.AccessToken;
+                    _authStorage.ClientToken = res.ClientToken;
+                    _authStorage.Save();
+                }
+                Login(res);
             }
+        }
+
+        private void Login(AuthInfo auth)
+        {
+            App.GetContext().AuthInfo = auth;
+            ((LoginFormViewModel)DataContext).LoginSuccess();
         }
     }
 }

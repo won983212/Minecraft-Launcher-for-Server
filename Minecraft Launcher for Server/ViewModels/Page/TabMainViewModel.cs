@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Minecraft_Launcher_for_Server.ViewModels
+namespace Minecraft_Launcher_for_Server.ViewModels.Page
 {
     class TabItem
     {
@@ -108,7 +108,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             DownloadStatus = e.Status;
             DownloadProgress = e.Progress;
 
-            if(e.Progress >= 100)
+            if(IsShowDownloadStatus && e.Progress >= 100)
             {
                 IsShowDownloadStatus = false;
                 App.GetContext().UpdatePatchVersion();

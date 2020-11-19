@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
-             xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+             xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels.Page"
              xmlns:tab="clr-namespace:Minecraft_Launcher_for_Server.Tabs"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 

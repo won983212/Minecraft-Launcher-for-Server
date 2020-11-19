@@ -1,5 +1,6 @@
 ﻿using Minecraft_Launcher_for_Server.Pages;
 using Minecraft_Launcher_for_Server.Updater;
+using Minecraft_Launcher_for_Server.ViewModels.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Minecraft_Launcher_for_Server.ViewModels
+namespace Minecraft_Launcher_for_Server.ViewModels.Page
 {
     class LoginFormViewModel : PageViewModelBase
     {

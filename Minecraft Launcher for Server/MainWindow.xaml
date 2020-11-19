@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:component="clr-namespace:Minecraft_Launcher_for_Server.Components"
         xmlns:viewmodel="clr-namespace:Minecraft_Launcher_for_Server.ViewModels"
+        xmlns:viewmodelPage="clr-namespace:Minecraft_Launcher_for_Server.ViewModels.Page"
         xmlns:page="clr-namespace:Minecraft_Launcher_for_Server.Pages"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
@@ -16,10 +17,10 @@
         <viewmodel:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:LoginFormViewModel}">
+        <DataTemplate DataType="{x:Type viewmodelPage:LoginFormViewModel}">
             <page:LoginForm />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:TabMainViewModel}">
+        <DataTemplate DataType="{x:Type viewmodelPage:TabMainViewModel}">
             <page:MainTabPage />
         </DataTemplate>
     </Window.Resources>

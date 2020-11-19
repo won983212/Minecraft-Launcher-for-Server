@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Transitions;
 using Minecraft_Launcher_for_Server.Updater;
+using Minecraft_Launcher_for_Server.ViewModels.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;

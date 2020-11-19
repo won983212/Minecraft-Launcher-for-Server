@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Minecraft_Launcher_for_Server.ViewModels
+namespace Minecraft_Launcher_for_Server.ViewModels.Page
 {
     class TabHomeViewModel : PageViewModelBase
     {

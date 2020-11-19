@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minecraft_Launcher_for_Server.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -18,6 +19,13 @@ namespace Minecraft_Launcher_for_Server
         public static MinecraftLauncherMain GetContext()
         {
             return ((App)Current)._main;
+        }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MainViewModel vmodel = Current.MainWindow.DataContext as MainViewModel;
+            vmodel.ShowErrorMessage("오류 발생", e.Exception.Message, () => { });
+            e.Handled = true;
         }
     }
 }

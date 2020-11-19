@@ -55,7 +55,7 @@ namespace Minecraft_Launcher_for_Server
 
 		private string GetLaunchAdditionalArguments(LaunchSetting launchSettings)
 		{
-			AuthResponse auth = App.GetContext().AuthInfo;
+			AuthInfo auth = App.GetContext().AuthInfo;
 			string arg = launchSettings.MinecraftArguments;
 
 			arg = arg.Replace("${auth_player_name}", auth.Username);
