@@ -23,7 +23,7 @@ namespace Minecraft_Launcher_for_Server
 			string data = File.ReadAllText(settingFile);
 			JObject json = JObject.Parse(data);
 
-			MinecraftLauncherMain ctx = App.GetContext();
+			MinecraftLauncherMain ctx = App.MainContext;
 			ctx.UpdatePatchVersion();
 
 			MainClass = (string)json["mainClass"];
@@ -55,7 +55,7 @@ namespace Minecraft_Launcher_for_Server
 
 		private string GetLaunchAdditionalArguments(LaunchSetting launchSettings)
 		{
-			AuthInfo auth = App.GetContext().AuthInfo;
+			AuthInfo auth = App.MainContext.AuthInfo;
 			string arg = launchSettings.MinecraftArguments;
 
 			arg = arg.Replace("${auth_player_name}", auth.Username);

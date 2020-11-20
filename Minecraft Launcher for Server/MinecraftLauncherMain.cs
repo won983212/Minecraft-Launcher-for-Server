@@ -16,18 +16,15 @@ namespace Minecraft_Launcher_for_Server
     public class MinecraftLauncherMain
     {
         public AuthInfo AuthInfo { get; set; }
-
         public AuthInfoStorage AuthInfoStorage { get; private set; } = new AuthInfoStorage();
-
         public ServerStatus ServerStatus { get; private set; } = new ServerStatus();
-
         public string PatchVersion { get; private set; }
-
 
         public MinecraftLauncherMain()
         {
             UpdatePatchVersion();
             AuthInfoStorage.Load();
+            ServerStatus.RetrieveAll();
         }
 
         public void UpdatePatchVersion()

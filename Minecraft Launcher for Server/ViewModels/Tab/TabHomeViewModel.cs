@@ -45,7 +45,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels.Page
 
         private void UpdateStartButton()
         {
-            _launchState = App.GetContext().GetLauncherState();
+            _launchState = App.MainContext.GetLauncherState();
             switch (_launchState)
             {
                 case LauncherState.CanStart:

@@ -10,24 +10,52 @@ using System.Threading.Tasks;
 
 namespace Minecraft_Launcher_for_Server.Updater
 {
-    public enum RetrieveState
-    {
-        Processing, Loaded, Error
-    }
-
     public class ServerStatus
     {
         private MemoryStream ms = new MemoryStream();
+        private ConnectionState _conState = new ConnectionState { State = RetrieveState.Processing };
 
         // minecraft server status
         public string Motd { get; private set; }
         public int PlayersOnline { get; private set; }
         public int PlayersMax { get; private set; }
         public int Protocol { get; private set; }
+        public int Ping { get; private set; }
 
         // api server status
         public string PatchVersion { get; private set; }
         public string ClientVersion { get; private set; }
+
+        public ConnectionState ConnectionState
+        {
+            get => _conState;
+            set
+            {
+                _conState = value;
+                OnConnectionStateChanged?.Invoke(this, value);
+            }
+        }
+
+        public event EventHandler<ConnectionState> OnConnectionStateChanged;
+
+        public async Task RetrieveAll()
+        {
+            string messagePrefix = "API 서버: ";
+
+            try
+            {
+                ConnectionState = new ConnectionState { State = RetrieveState.Processing };
+                await _RetrieveAPIServerVersion();
+                messagePrefix = "Minecraft 서버: ";
+                await _RetrieveServerStatus();
+                ConnectionState = new ConnectionState { State = RetrieveState.Loaded };
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e);
+                ConnectionState = new ConnectionState { State = RetrieveState.Error, ErrorMessage = messagePrefix + e.Message };
+            }
+        }
 
         public static bool IsActiveAPIServer()
         {
@@ -48,6 +76,25 @@ namespace Minecraft_Launcher_for_Server.Updater
 
         public async Task RetrieveAPIServerVersion()
         {
+            try
+            {
+                ConnectionState = new ConnectionState { State = RetrieveState.Processing };
+                await _RetrieveAPIServerVersion();
+                ConnectionState = new ConnectionState { State = RetrieveState.Loaded };
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e);
+                ConnectionState = new ConnectionState { State = RetrieveState.Error, ErrorMessage = "API 서버: " + e.Message };
+            }
+        }
+
+        private async Task _RetrieveAPIServerVersion()
+        {
+            bool isActive = await Task.Factory.StartNew(IsActiveAPIServer);
+            if (!isActive)
+                throw new Exception("API 서버와 연결할 수 없습니다.");
+
             using (WebClient client = new WebClient())
             {
                 string data = await client.DownloadStringTaskAsync(URLs.InfoFile);
@@ -58,6 +105,21 @@ namespace Minecraft_Launcher_for_Server.Updater
         }
 
         public async Task RetrieveServerStatus()
+        {
+            try
+            {
+                ConnectionState = new ConnectionState { State = RetrieveState.Processing };
+                await _RetrieveServerStatus();
+                ConnectionState = new ConnectionState { State = RetrieveState.Loaded };
+            } 
+            catch(Exception e)
+            {
+                Logger.Debug(e);
+                ConnectionState = new ConnectionState { State = RetrieveState.Error, ErrorMessage = "Minecraft 서버: " + e.Message };
+            }
+        }
+
+        private async Task _RetrieveServerStatus()
         {
             Tuple<string, int> data = await Task.Factory.StartNew(RetrieveServerStatusSync);
 
@@ -83,6 +145,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             Logger.Debug("[ServerStatus] Connected to " + serverIP);
             BufferedStream stream = new BufferedStream(client.GetStream());
 
+            // handshake
             BinaryWriter bw = new BinaryWriter(stream);
             WriteVarInt(ms, -1);
             WriteString(ms, serverIP);
@@ -95,9 +158,22 @@ namespace Minecraft_Launcher_for_Server.Updater
             BinaryReader br = new BinaryReader(stream);
             int len = ReadVarInt(br); // content-length
             int id = ReadVarInt(br); // id
-
             Logger.Debug("[ServerStatus] Packet " + id + " is receved. (" + len + ")");
             string data = ReadString(br);
+
+            // ping pong
+            long ticks = DateTime.UtcNow.Ticks;
+            WriteLong(ms, ticks);
+            Flush(bw, 1);
+            Logger.Debug("[ServerStatus] Sent ping packet. (" + ticks + ")");
+
+            len = ReadVarInt(br); // content-length
+            id = ReadVarInt(br); // id
+            Logger.Debug("[ServerStatus] Packet " + id + " is receved. (" + len + ")");
+            long pong = ReadLong(br);
+
+            Ping = (int) ((DateTime.UtcNow.Ticks - pong) / 10000.0);
+            Logger.Debug("[ServerStatus] Pong! " + Ping);
 
             client.Close();
             return new Tuple<string, int>(data, id);
@@ -122,7 +198,7 @@ namespace Minecraft_Launcher_for_Server.Updater
         {
             var value = 0;
             var size = 0;
-            int b;
+            byte b;
             while ((((b = br.ReadByte()) & 0x80) == 0x80))
             {
                 value |= (b & 0x7F) << (size++ * 7);
@@ -137,6 +213,17 @@ namespace Minecraft_Launcher_for_Server.Updater
             int size = ReadVarInt(br);
             byte[] data = br.ReadBytes(size);
             return Encoding.UTF8.GetString(data);
+        }
+
+        private long ReadLong(BinaryReader br)
+        {
+            long data = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                data |= br.ReadByte();
+                if(i != 7) data <<= 8;
+            }
+            return data;
         }
 
         private void WriteString(Stream stream, string value)
@@ -163,6 +250,12 @@ namespace Minecraft_Launcher_for_Server.Updater
         {
             stream.WriteByte((byte)((value >> 8) & 0xff));
             stream.WriteByte((byte)(value & 0xff));
+        }
+
+        private void WriteLong(Stream stream, long value)
+        {
+            for(int i = 7; i >= 0; i--)
+                stream.WriteByte((byte)((value >> (8 * i)) & 0xff));
         }
     }
 }

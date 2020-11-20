@@ -111,7 +111,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels.Page
             if(IsShowDownloadStatus && e.Progress >= 100)
             {
                 IsShowDownloadStatus = false;
-                App.GetContext().UpdatePatchVersion();
+                App.MainContext.UpdatePatchVersion();
                 DownloadCompleted?.Invoke(this, null);
                 StartMinecraft();
             }

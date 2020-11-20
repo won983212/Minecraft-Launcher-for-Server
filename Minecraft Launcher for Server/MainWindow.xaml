@@ -142,6 +142,21 @@
         </materialDesign:Snackbar>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <!-- Signal button -->
+            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" Visibility="{Binding SignalIconVisibility}" Command="{Binding ReconnectCommand}">
+                <Button.ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="(클릭시 새로고침합니다.)"/>
+                        <TextBlock Text="{Binding ServerInfo.Motd}"/>
+                        <Grid>
+                            <TextBlock Text="{Binding ServerInfo.PlayerCount}" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding ServerInfo.Ping}" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Button.ToolTip>
+                <materialDesign:PackIcon Kind="{Binding SignalIcon}" Foreground="White" Width="18" Height="18"/>
+            </Button>
+            
             <!-- Config button -->
             <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" ToolTip="설정">
                 <materialDesign:PackIcon Kind="Settings" Foreground="White" Width="18" Height="18" />

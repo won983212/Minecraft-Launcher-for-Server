@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="Components\MultiplexerPanel.cs" />
     <Compile Include="Components\NoSizeDecorator.cs" />
+    <Compile Include="ConnectionState.cs" />
     <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="ErrorMessageObject.cs" />
     <Compile Include="Launcher.cs" />

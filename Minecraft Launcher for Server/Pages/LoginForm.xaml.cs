@@ -23,12 +23,20 @@ namespace Minecraft_Launcher_for_Server.Pages
      */
     public partial class LoginForm : UserControl
     {
-        private static readonly AuthInfoStorage _authStorage = App.GetContext().AuthInfoStorage;
+        private static readonly AuthInfoStorage _authStorage = App.MainContext.AuthInfoStorage;
 
         public LoginForm()
         {
             InitializeComponent();
-            CheckKeepLogin();
+            App.MainContext.ServerStatus.OnConnectionStateChanged += MainContext_OnConnectionStateChanged;
+        }
+
+        private void MainContext_OnConnectionStateChanged(object sender, ConnectionState e)
+        {
+            if(e.State == RetrieveState.Loaded)
+            {
+                CheckKeepLogin();
+            }
         }
 
         private void AddErrorSnackbar(string message)
@@ -95,6 +103,8 @@ namespace Minecraft_Launcher_for_Server.Pages
         private async void DoAuth()
         {
             loginForm.IsEnabled = false;
+            await ((MainViewModel)(DataContext as LoginFormViewModel).RootViewModel).ThrowIfAPIServerClosed();
+
             string id = tbxUsername.Text;
             string pass = tbxPassword.Password;
 
@@ -124,7 +134,7 @@ namespace Minecraft_Launcher_for_Server.Pages
 
         private void Login(AuthInfo auth)
         {
-            App.GetContext().AuthInfo = auth;
+            App.MainContext.AuthInfo = auth;
             ((LoginFormViewModel)DataContext).LoginSuccess();
         }
     }

@@ -13,6 +13,8 @@ namespace Minecraft_Launcher_for_Server
 
         public string Message { get; set; }
 
+        public string FullMessage { get; set; }
+
         public Action Callback { get; set; }
     }
 }

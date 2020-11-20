@@ -95,6 +95,11 @@ namespace Minecraft_Launcher_for_Server.Components
             dialog.tbTitle.Text = message.Title;
             dialog.tbMessage.Text = message.Message;
             dialog._callback = message.Callback;
+
+            if (message.FullMessage != null)
+                dialog.btnDetail.Visibility = Visibility.Visible;
+            else
+                dialog.btnDetail.Visibility = Visibility.Collapsed;
         }
 
         public static void OnIsShowChanged(DependencyObject obj, DependencyPropertyChangedEventArgs arg)
@@ -104,6 +109,15 @@ namespace Minecraft_Launcher_for_Server.Components
                 dialog.ShowMessage();
             else
                 dialog.CloseMessage();
+        }
+
+        private void ShowFullMessage_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show(ErrorObject.FullMessage, "이 내용을 복사하시겠습니까?", MessageBoxButton.YesNo);
+            if(res == MessageBoxResult.Yes)
+            {
+                Clipboard.SetText(ErrorObject.FullMessage);
+            }
         }
     }
 }

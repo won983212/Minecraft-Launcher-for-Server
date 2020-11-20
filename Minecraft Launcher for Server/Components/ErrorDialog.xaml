@@ -36,9 +36,14 @@
                     <TextBlock x:Name="tbMessage" Margin="20,15,0,30" FontSize="10pt"/>
                 </StackPanel>
             </Grid>
-            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Right"
-                            FontWeight="Normal" Width="100" Margin="20,15" materialDesign:ButtonAssist.CornerRadius="0" Click="Exit_Click">확인
-            </Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,15">
+                <Button x:Name="btnDetail" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="10,0"
+                            FontWeight="Normal" Width="120" materialDesign:ButtonAssist.CornerRadius="0" Click="ShowFullMessage_Click">자세한 정보
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" 
+                            FontWeight="Normal" Width="100" materialDesign:ButtonAssist.CornerRadius="0" Click="Exit_Click">확인
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

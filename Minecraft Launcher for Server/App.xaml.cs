@@ -14,17 +14,12 @@ namespace Minecraft_Launcher_for_Server
     /// </summary>
     public partial class App : Application
     {
-        private MinecraftLauncherMain _main = new MinecraftLauncherMain();
-
-        public static MinecraftLauncherMain GetContext()
-        {
-            return ((App)Current)._main;
-        }
+        public static MinecraftLauncherMain MainContext { get; private set; } = new MinecraftLauncherMain();
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MainViewModel vmodel = Current.MainWindow.DataContext as MainViewModel;
-            vmodel.ShowErrorMessage("오류 발생", e.Exception.Message, () => { });
+            vmodel.ShowErrorMessage(e.Exception, () => { });
             e.Handled = true;
         }
     }
