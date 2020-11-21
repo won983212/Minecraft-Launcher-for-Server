@@ -104,7 +104,6 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             get => _reconnectCommand = _reconnectCommand ?? new RelayCommand((a) => App.MainContext.ServerStatus.RetrieveAll());
         }
 
-        // TODO Serverstatus 보여주는 툴팁 디자인 개선
         public MainViewModel()
         {
             CurrentPage = new LoginFormViewModel(this);

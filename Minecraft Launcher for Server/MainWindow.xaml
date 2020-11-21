@@ -146,12 +146,15 @@
             <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" Visibility="{Binding SignalIconVisibility}" Command="{Binding ReconnectCommand}">
                 <Button.ToolTip>
                     <StackPanel>
-                        <TextBlock Text="(클릭시 새로고침합니다.)"/>
-                        <TextBlock Text="{Binding ServerInfo.Motd}"/>
-                        <Grid>
-                            <TextBlock Text="{Binding ServerInfo.PlayerCount}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="{Binding ServerInfo.Ping}" HorizontalAlignment="Right"/>
-                        </Grid>
+                        <TextBlock Text="{Binding ServerInfo.Motd}" FontSize="12pt"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <materialDesign:PackIcon Kind="AccountGroup" Margin="0,0,5,0" Width="18" Height="18" />
+                            <TextBlock Text="{Binding ServerInfo.PlayerCount}" Margin="0,0,8,0"/>
+                            <materialDesign:PackIcon Kind="Signal" Margin="0,0,5,0" Width="18" Height="18" />
+                            <TextBlock Text="{Binding ServerInfo.Ping}"/>
+                        </StackPanel>
+                        <Separator Margin="0,5"/>
+                        <TextBlock Text="클릭시 새로고침합니다." HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button.ToolTip>
                 <materialDesign:PackIcon Kind="{Binding SignalIcon}" Foreground="White" Width="18" Height="18"/>

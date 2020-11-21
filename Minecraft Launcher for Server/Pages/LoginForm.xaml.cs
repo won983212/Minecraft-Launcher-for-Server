@@ -24,18 +24,39 @@ namespace Minecraft_Launcher_for_Server.Pages
     public partial class LoginForm : UserControl
     {
         private static readonly AuthInfoStorage _authStorage = App.MainContext.AuthInfoStorage;
+        private bool _hasKeepLogged = true;
 
         public LoginForm()
         {
             InitializeComponent();
             App.MainContext.ServerStatus.OnConnectionStateChanged += MainContext_OnConnectionStateChanged;
+
+            if (_authStorage.HasTokenData())
+            {
+                loginForm.IsEnabled = false;
+                cbxKeepLogin.IsChecked = true;
+            }
         }
 
         private void MainContext_OnConnectionStateChanged(object sender, ConnectionState e)
         {
-            if(e.State == RetrieveState.Loaded)
+            if (e.State == RetrieveState.Loaded)
             {
-                CheckKeepLogin();
+                if (_hasKeepLogged)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        CheckKeepLogin();
+                        _hasKeepLogged = false;
+                    });
+                }
+            }
+            else
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    loginForm.IsEnabled = true;
+                });
             }
         }
 
@@ -91,8 +112,9 @@ namespace Minecraft_Launcher_for_Server.Pages
                     _authStorage.Save();
                     Login(auth);
                 }
-                catch 
+                catch (Exception e)
                 {
+                    Logger.Debug(e);
                     _authStorage.Clear();
                 }
             }
@@ -135,7 +157,10 @@ namespace Minecraft_Launcher_for_Server.Pages
         private void Login(AuthInfo auth)
         {
             App.MainContext.AuthInfo = auth;
-            ((LoginFormViewModel)DataContext).LoginSuccess();
+            if (DataContext != null && DataContext is LoginFormViewModel)
+            {
+                ((LoginFormViewModel)DataContext).LoginSuccess();
+            }
         }
     }
 }

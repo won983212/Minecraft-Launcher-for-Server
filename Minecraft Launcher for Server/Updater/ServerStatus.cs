@@ -153,23 +153,19 @@ namespace Minecraft_Launcher_for_Server.Updater
             WriteVarInt(ms, 1);
             Flush(bw, 0);
             Flush(bw, 0);
-            Logger.Debug("[ServerStatus] Sent handshake packet.");
 
             BinaryReader br = new BinaryReader(stream);
             int len = ReadVarInt(br); // content-length
             int id = ReadVarInt(br); // id
-            Logger.Debug("[ServerStatus] Packet " + id + " is receved. (" + len + ")");
             string data = ReadString(br);
 
             // ping pong
             long ticks = DateTime.UtcNow.Ticks;
             WriteLong(ms, ticks);
             Flush(bw, 1);
-            Logger.Debug("[ServerStatus] Sent ping packet. (" + ticks + ")");
 
             len = ReadVarInt(br); // content-length
             id = ReadVarInt(br); // id
-            Logger.Debug("[ServerStatus] Packet " + id + " is receved. (" + len + ")");
             long pong = ReadLong(br);
 
             Ping = (int) ((DateTime.UtcNow.Ticks - pong) / 10000.0);
