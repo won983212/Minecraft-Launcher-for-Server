@@ -83,6 +83,9 @@
     </Compile>
     <Compile Include="Components\MultiplexerPanel.cs" />
     <Compile Include="Components\NoSizeDecorator.cs" />
+    <Compile Include="Components\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConnectionState.cs" />
     <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="ErrorMessageObject.cs" />
@@ -126,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\FloatingHintPasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
