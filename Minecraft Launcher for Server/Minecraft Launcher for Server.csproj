@@ -75,6 +75,9 @@
     </ApplicationDefinition>
     <Compile Include="AuthInfoStorage.cs" />
     <Compile Include="BadAuthenticationException.cs" />
+    <Compile Include="Components\ControlPanel.xaml.cs">
+      <DependentUpon>ControlPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\DownloadStatusBar.xaml.cs">
       <DependentUpon>DownloadStatusBar.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,10 @@
     <Compile Include="ViewModels\Page\TabMainViewModel.cs" />
     <Compile Include="ViewModels\Page\LoginFormViewModel.cs" />
     <Page Include="Components\BackgroundImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\ControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

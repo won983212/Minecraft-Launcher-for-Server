@@ -12,23 +12,39 @@ namespace Minecraft_Launcher_for_Server.Properties
 		public Settings()
 		{
 			SettingsLoaded += Settings_SettingsLoaded;
+            SettingsSaving += Settings_SettingsSaving;
 		}
 
-		private void Settings_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
+        private void Settings_SettingsSaving(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+			DetectWrong();
+		}
+
+        private void Settings_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
 		{
+            if (DetectWrong())
+				Default.Save();
+		}
+
+		private bool DetectWrong()
+        {
+			bool modified = false;
+
 			Uri result;
 			if (!Uri.TryCreate(Default.APIServerLocation, UriKind.Absolute, out result) || (result.Scheme != Uri.UriSchemeHttp && result.Scheme != Uri.UriSchemeHttps))
 			{
 				Default.APIServerLocation = "http://localhost";
-				Default.Save();
+				modified = true;
 			}
 
 			if (!Directory.Exists(Default.MinecraftDir))
 			{
 				string folderName = "minecraft_" + Default.ServerName.ToLower();
 				Default.MinecraftDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName);
-				Default.Save();
+				modified = true;
 			}
+
+			return modified;
 		}
 	}
 }

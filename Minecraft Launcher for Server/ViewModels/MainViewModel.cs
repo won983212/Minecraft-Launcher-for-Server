@@ -32,10 +32,13 @@ namespace Minecraft_Launcher_for_Server.ViewModels
         private ErrorMessageObject _errorInfo;
         private string _signalIcon = "SignalCellular1";
         private Visibility _signalIconVisibility = Visibility.Collapsed;
-        private bool _errorVisible = false;
+        private bool _showErrorDialog = false;
+        private bool _showControlPanel = false;
         private bool _splashAnimation = false;
         private ServerInfo _serverInfo;
+
         private ICommand _reconnectCommand;
+        private ICommand _showSettingCommand;
 
         public SnackbarMessageQueue SnackMessages { get; private set; }
 
@@ -49,12 +52,22 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             }
         }
 
-        public bool ErrorVisible
+        public bool ShowErrorDialog
         {
-            get => _errorVisible;
+            get => _showErrorDialog;
             set
             {
-                _errorVisible = value;
+                _showErrorDialog = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowControlPanel
+        {
+            get => _showControlPanel;
+            set
+            {
+                _showControlPanel = value;
                 OnPropertyChanged();
             }
         }
@@ -104,9 +117,16 @@ namespace Minecraft_Launcher_for_Server.ViewModels
             get => _reconnectCommand = _reconnectCommand ?? new RelayCommand((a) => App.MainContext.ServerStatus.RetrieveAll());
         }
 
+        public ICommand ShowSettingCommand
+        {
+            get => _showSettingCommand = _showSettingCommand ?? new RelayCommand((a) => ShowControlPanel = true);
+        }
+
         public MainViewModel()
         {
-            CurrentPage = new LoginFormViewModel(this);
+            // TODO DEBUG: 편의를 위해 임시로 tab을 메인으로
+            //CurrentPage = new LoginFormViewModel(this);
+            CurrentPage = new TabMainViewModel(this);
             SnackMessages = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
             ErrorInfo = new ErrorMessageObject();
             App.MainContext.ServerStatus.OnConnectionStateChanged += ServerStatus_OnConnectionStateChanged;
@@ -155,7 +175,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
                 FullMessage = e.ToString(),
                 Callback = callback
             };
-            ErrorVisible = true;
+            ShowErrorDialog = true;
         }
 
         public void ShowErrorMessage(string title, string message, Action callback)
@@ -167,7 +187,7 @@ namespace Minecraft_Launcher_for_Server.ViewModels
                 FullMessage = null,
                 Callback = callback
             };
-            ErrorVisible = true;
+            ShowErrorDialog = true;
         }
 
         public async Task ThrowIfAPIServerClosed()

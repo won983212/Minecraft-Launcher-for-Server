@@ -28,11 +28,14 @@
         <!-- Content -->
         <ContentControl Content="{Binding CurrentPage}"/>
 
+        <!-- Control Panel -->
+        <component:ControlPanel IsShow="{Binding ShowControlPanel, Mode=TwoWay}"/>
+
         <!-- Splash screen -->
         <component:SplashScreen IsActive="{Binding SplashAnimation}"/>
 
         <!-- ErrorDialog -->
-        <component:ErrorDialog x:Name="dialogError" ErrorObject="{Binding ErrorInfo}" IsShow="{Binding ErrorVisible, Mode=TwoWay}"/>
+        <component:ErrorDialog x:Name="dialogError" ErrorObject="{Binding ErrorInfo}" IsShow="{Binding ShowErrorDialog, Mode=TwoWay}"/>
 
         <!-- Top Snackbar -->
         <materialDesign:Snackbar x:Name="ErrorSnackbar" VerticalAlignment="Top" Background="{StaticResource SecondaryHueMidBrush}" 
@@ -64,7 +67,7 @@
             </Button>
             
             <!-- Config button -->
-            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" ToolTip="설정">
+            <Button Style="{StaticResource MaterialDesignIconButton}" Width="30" Height="30" ToolTip="설정" Command="{Binding ShowSettingCommand}">
                 <materialDesign:PackIcon Kind="Settings" Foreground="White" Width="18" Height="18" />
             </Button>
 
