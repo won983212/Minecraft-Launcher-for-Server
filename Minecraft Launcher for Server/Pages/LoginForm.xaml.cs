@@ -1,9 +1,11 @@
 ﻿using Minecraft_Launcher_for_Server.Properties;
 using Minecraft_Launcher_for_Server.ViewModels;
 using Minecraft_Launcher_for_Server.ViewModels.Page;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -154,8 +156,18 @@ namespace Minecraft_Launcher_for_Server.Pages
             }
         }
 
-        private void Login(AuthInfo auth)
+        private async void Login(AuthInfo auth)
         {
+            string requestURL = URLs.APIUserInfo(auth.UUID);
+            string data = await new WebClient().DownloadStringTaskAsync(requestURL);
+
+            JObject obj = JObject.Parse(data);
+            if ((bool)obj["whitelist"] == false)
+            {
+                AddErrorSnackbar("화이트리스트에 등록되지 않은 유저입니다. 가입버튼을 눌러 가입하시길 바랍니다.");
+                return;
+            }
+
             App.MainContext.AuthInfo = auth;
             if (DataContext != null && DataContext is LoginFormViewModel)
             {

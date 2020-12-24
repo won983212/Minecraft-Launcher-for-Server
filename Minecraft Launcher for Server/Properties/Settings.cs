@@ -44,6 +44,13 @@ namespace Minecraft_Launcher_for_Server.Properties
 				modified = true;
 			}
 
+			string mcdir = Default.MinecraftDir;
+			if (mcdir.EndsWith("/") || mcdir.EndsWith("\\"))
+            {
+				Default.MinecraftDir = mcdir.Substring(0, mcdir.Length - 1);
+				modified = true;
+			}
+
 			return modified;
 		}
 	}

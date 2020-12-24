@@ -39,6 +39,10 @@ namespace Minecraft_Launcher_for_Server.Updater
         // Hash 검사를 통해 업데이트가 필요한 파일만 다운로드할 건지?
         public bool DownloadOnlyNecessary { get; set; } = true;
 
+        // 삭제란? 서버의 파일 리스트와 비교하여 서버에 없는 파일은 삭제하는 것.
+        // 삭제를 지원하는 폴더 리스트 정의. null일 경우 없는 것으로 판단
+        public string[] DetectDeletionFolder { get; set; } = null;
+
 
         public event EventHandler<ProgressArgs> OnProgress;
 
@@ -102,9 +106,31 @@ namespace Minecraft_Launcher_for_Server.Updater
             return string.Equals(sb.ToString(), file.Hash, StringComparison.OrdinalIgnoreCase);
         }
 
+        private void ProcessFileSyncDelete(JObject objects, string parentFolder, string path)
+        {
+            foreach (string dir in Directory.EnumerateDirectories(path))
+                ProcessFileSyncDelete(objects, parentFolder, dir);
+
+            foreach (string file in Directory.EnumerateFiles(path))
+            {
+                string key = file.Substring(parentFolder.Length + 1).Replace('\\', '/');
+                if (!objects.ContainsKey(key))
+                {
+                    Logger.Debug("Delete " + file);
+                    File.Delete(file);
+                }
+            }
+
+            if (!Directory.EnumerateFileSystemEntries(path).Any())
+            {
+                Directory.Delete(path);
+                Logger.Debug("Delete " + path);
+            }
+        }
+
         private void Download()
         {
-            UpdateStatus(0, "Index파일 다운로드중..");
+            UpdateStatus(0, "Index파일 다운로드 중..");
             string indexData = new WebClient().DownloadString(_indexesURL);
             string parentFolder = _savePath;
 
@@ -126,7 +152,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             SHA1Managed sha1 = new SHA1Managed();
             List<FileObj> files = new List<FileObj>();
 
-            UpdateStatus(0, "다운로드해야 할 파일 검색중..");
+            UpdateStatus(0, "다운로드해야 할 파일 검색 중..");
             foreach (var token in indexDataJson["objects"])
             {
                 JProperty p = token as JProperty;
@@ -140,9 +166,23 @@ namespace Minecraft_Launcher_for_Server.Updater
                 }
             }
 
+            // TODO 말단 폴더만 삭제되는데 해결좀
+            UpdateStatus(0, "삭제해야 할 파일 검색 중..");
+            if(DetectDeletionFolder != null && DetectDeletionFolder.Length > 0)
+            {
+                JObject objects = (JObject) indexDataJson["objects"];
+                foreach (string folder in DetectDeletionFolder)
+                {
+                    string path = Path.Combine(parentFolder, folder);
+                    if (!Directory.Exists(path))
+                        continue;
+                    ProcessFileSyncDelete(objects, parentFolder, path);
+                }
+            }
+
             sha1.Dispose();
             Interlocked.Exchange(ref _total, files.Count);
-            UpdateStatus(0, "다운로드중..");
+            UpdateStatus(0, "다운로드 중..");
 
             try
             {
@@ -168,6 +208,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             string downloadUrl = Path.Combine(_resourceUrl, file.Hash.Substring(0, 2) + "/" + file.Hash);
             var sr = new BinaryReader(WebRequest.Create(downloadUrl).GetResponse().GetResponseStream());
             var sw = new BinaryWriter(new FileStream(path, FileMode.Create));
+            Logger.Debug("Download " + path);
 
             byte[] buf = new byte[1024];
             int len;
@@ -178,7 +219,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             sw.Close();
             Interlocked.Increment(ref _count);
 
-            UpdateStatus((_count * 100.0 / _total), _isCanceling ? "취소하고 있습니다.." : "다운로드중..");
+            UpdateStatus((_count * 100.0 / _total), _isCanceling ? "취소하고 있습니다.." : "다운로드 중..");
             if(_count == _total)
             {
                 _isRunning = false;

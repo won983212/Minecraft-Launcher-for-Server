@@ -30,6 +30,7 @@ namespace Minecraft_Launcher_for_Server.Updater
                 CheckDownloadTaskCancelled();
 
                 _currentDownloader = new HashDownloader(settings.MinecraftDir, URLs.IndexFile, URLs.PatchFolder);
+                _currentDownloader.DetectDeletionFolder = new string[] { "mods", "libraries", "natives", "scripts" };
                 _currentDownloader.OnProgress += (s, a) => { UpdateProgress(a.Progress * 0.39 + 60, "패치파일: " + a.Status); };
                 await _currentDownloader.DownloadTask();
                 CheckDownloadTaskCancelled();

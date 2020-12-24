@@ -46,9 +46,15 @@ namespace Minecraft_Launcher_for_Server.Components
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             IsShow = false;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Reset();
         }
 
         private void ShowMessage()

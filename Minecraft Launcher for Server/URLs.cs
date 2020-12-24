@@ -42,6 +42,11 @@ namespace Minecraft_Launcher_for_Server
             }
         }
 
+        public static string APIUserInfo(string uuid)
+        {
+            return settings.APIServerLocation + "/api/user/" + uuid;
+        }
+
         public static readonly string AssetsURL = "http://resources.download.minecraft.net/";
     }
 }
