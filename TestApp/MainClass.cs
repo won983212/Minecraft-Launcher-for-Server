@@ -58,7 +58,7 @@ namespace TestApp
             //AddIndexResources(@"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\resource-files", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html\resources", @"C:\Users\psvm\Desktop\webserver\nginx-1.19.4\html");
         }
 
-        void AddIndexResources(string srcPath, string dstPath, string indexPath)
+        static void AddIndexResources(string srcPath, string dstPath, string indexPath)
         {
             JObject json = new JObject();
             Queue<string> folders = new Queue<string>();
@@ -92,7 +92,7 @@ namespace TestApp
             sha1.Dispose();
         }
 
-        string SHA1(SHA1Managed sha1, string path)
+        static string SHA1(SHA1Managed sha1, string path)
         {
             StringBuilder sb = new StringBuilder(40);
             using (FileStream fs = new FileStream(path, FileMode.Open))
@@ -106,7 +106,15 @@ namespace TestApp
 
         static void Main(string[] args)
         {
-            new MainClass();
+            //new MainClass();
+            if(args.Length != 3)
+            {
+                Console.WriteLine("updateRes <Source resource path> <Output resource path> <Indexes file path>");
+            }
+            else
+            {
+                AddIndexResources(args[0], args[1], args[2]);
+            }
         }
     }
 }

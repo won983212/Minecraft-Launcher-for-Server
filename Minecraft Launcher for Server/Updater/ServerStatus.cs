@@ -12,6 +12,7 @@ namespace Minecraft_Launcher_for_Server.Updater
 {
     public class ServerStatus
     {
+        private const int Timeout = 3000;
         private MemoryStream ms = new MemoryStream();
         private ConnectionState _conState = new ConnectionState { State = RetrieveState.Processing };
 
@@ -23,6 +24,7 @@ namespace Minecraft_Launcher_for_Server.Updater
         public int Ping { get; private set; }
 
         // api server status
+        public string Notice { get; private set; }
         public string PatchVersion { get; private set; }
         public string ClientVersion { get; private set; }
 
@@ -62,7 +64,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             try
             {
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(URLs.InfoFile);
-                req.Timeout = 3000;
+                req.Timeout = Timeout;
                 req.AllowAutoRedirect = false;
                 req.Method = "HEAD";
                 req.GetResponse().Dispose();
@@ -95,7 +97,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             if (!isActive)
                 throw new Exception("API 서버와 연결할 수 없습니다.");
 
-            using (WebClient client = new WebClient())
+            using (TimeoutWebClient client = new TimeoutWebClient(Timeout))
             {
                 string data = await client.DownloadStringTaskAsync(URLs.InfoFile);
                 JObject obj = JObject.Parse(data);
@@ -111,8 +113,8 @@ namespace Minecraft_Launcher_for_Server.Updater
                 ConnectionState = new ConnectionState { State = RetrieveState.Processing };
                 await _RetrieveServerStatus();
                 ConnectionState = new ConnectionState { State = RetrieveState.Loaded };
-            } 
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Logger.Debug(e);
                 ConnectionState = new ConnectionState { State = RetrieveState.Error, ErrorMessage = "Minecraft 서버: " + e.Message };
@@ -138,9 +140,10 @@ namespace Minecraft_Launcher_for_Server.Updater
         private Tuple<string, int> RetrieveServerStatusSync()
         {
             string serverIP = Properties.Settings.Default.MinecraftServerIP;
+            int serverPort = Properties.Settings.Default.MinecraftServerPort;
 
             TcpClient client = new TcpClient();
-            client.Connect(serverIP, 25565);
+            TimeoutSocket.Connect(client, serverIP, serverPort, Timeout);
 
             Logger.Debug("[ServerStatus] Connected to " + serverIP);
             BufferedStream stream = new BufferedStream(client.GetStream());
@@ -149,7 +152,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             BinaryWriter bw = new BinaryWriter(stream);
             WriteVarInt(ms, -1);
             WriteString(ms, serverIP);
-            WriteUnsignedShort(ms, 25565);
+            WriteUnsignedShort(ms, serverPort);
             WriteVarInt(ms, 1);
             Flush(bw, 0);
             Flush(bw, 0);
@@ -168,7 +171,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             id = ReadVarInt(br); // id
             long pong = ReadLong(br);
 
-            Ping = (int) ((DateTime.UtcNow.Ticks - pong) / 10000.0);
+            Ping = (int)((DateTime.UtcNow.Ticks - pong) / 10000.0);
             Logger.Debug("[ServerStatus] Pong! " + Ping);
 
             client.Close();
@@ -217,7 +220,7 @@ namespace Minecraft_Launcher_for_Server.Updater
             for (int i = 0; i < 8; i++)
             {
                 data |= br.ReadByte();
-                if(i != 7) data <<= 8;
+                if (i != 7) data <<= 8;
             }
             return data;
         }
@@ -232,13 +235,13 @@ namespace Minecraft_Launcher_for_Server.Updater
         private int WriteVarInt(Stream stream, int value)
         {
             int size = 1;
-            while((value & -128) != 0)
+            while ((value & -128) != 0)
             {
                 stream.WriteByte((byte)(value & 127 | 128));
                 value = (byte)(((uint)value) >> 7);
                 size++;
             }
-            stream.WriteByte((byte) value);
+            stream.WriteByte((byte)value);
             return size;
         }
 
@@ -250,7 +253,7 @@ namespace Minecraft_Launcher_for_Server.Updater
 
         private void WriteLong(Stream stream, long value)
         {
-            for(int i = 7; i >= 0; i--)
+            for (int i = 7; i >= 0; i--)
                 stream.WriteByte((byte)((value >> (8 * i)) & 0xff));
         }
     }

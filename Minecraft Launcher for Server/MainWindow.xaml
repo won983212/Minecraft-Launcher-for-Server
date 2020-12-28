@@ -29,7 +29,7 @@
         <ContentControl Content="{Binding CurrentPage}"/>
 
         <!-- Control Panel -->
-        <component:ControlPanel IsShow="{Binding ShowControlPanel, Mode=TwoWay}"/>
+        <component:ControlPanel IsShow="{Binding ShowControlPanel, Mode=TwoWay}" DataContext="{Binding Mode=OneWay}"/>
 
         <!-- Splash screen -->
         <component:SplashScreen IsActive="{Binding SplashAnimation}"/>

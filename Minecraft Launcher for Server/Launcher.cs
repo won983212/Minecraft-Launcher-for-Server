@@ -51,22 +51,21 @@ namespace Minecraft_Launcher_for_Server
 		public event EventHandler<string> OnError;
 		public event EventHandler<int> OnExited;
 
+		public string PlayerName { get; set; } = "Unnamed";
 		public bool IsRunning { get => _isRunning; }
+		public bool IsAutoJoin { get; set; } = true;
 
 		private string GetLaunchAdditionalArguments(LaunchSetting launchSettings)
 		{
-			AuthInfo auth = App.MainContext.AuthInfo;
 			string arg = launchSettings.MinecraftArguments;
-
-			arg = arg.Replace("${auth_player_name}", auth.Username);
+			arg = arg.Replace("${auth_player_name}", PlayerName);
 			arg = arg.Replace("${version_name}", launchSettings.MinecraftVersion);
 			arg = arg.Replace("${game_directory}", settings.MinecraftDir);
 			arg = arg.Replace("${assets_root}", Path.Combine(settings.MinecraftDir, "assets"));
 			arg = arg.Replace("${assets_index_name}", launchSettings.AssetsVersion);
-			arg = arg.Replace("${auth_uuid}", auth.UUID);
-			arg = arg.Replace("${auth_access_token}", auth.AccessToken);
+			arg = arg.Replace("${auth_uuid}", "sessionid");
+			arg = arg.Replace("${auth_access_token}", "-");
 			arg = arg.Replace("${user_type}", "-");
-
 			return arg;
 		}
 
@@ -80,7 +79,7 @@ namespace Minecraft_Launcher_for_Server
 
 			StringBuilder sb = new StringBuilder();
 			sb.Append(settings.Arguments);
-			sb.Append(' ');
+			sb.Append(" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump ");
 			sb.Append("-Xmx");
 			sb.Append(settings.MemorySize);
 			sb.Append("G ");
@@ -99,8 +98,14 @@ namespace Minecraft_Launcher_for_Server
 			sb.Append(launchSettings.MainClass);
 			sb.Append(' ');
 			sb.Append(GetLaunchAdditionalArguments(launchSettings));
-			sb.Append(" --server ");
-			sb.Append(settings.MinecraftServerIP);
+
+			if (IsAutoJoin)
+			{
+				sb.Append(" --server ");
+				sb.Append(settings.MinecraftServerIP);
+				sb.Append(" --port ");
+				sb.Append(settings.MinecraftServerPort);
+			}
 
 			return sb.ToString();
 		}
@@ -159,12 +164,12 @@ namespace Minecraft_Launcher_for_Server
 		}
 
 		private void Log(string str)
-        {
+		{
 			OnLog?.Invoke(this, str);
-        }
+		}
 
 		private void Error(string str)
-        {
+		{
 			OnError?.Invoke(this, str);
 		}
 	}

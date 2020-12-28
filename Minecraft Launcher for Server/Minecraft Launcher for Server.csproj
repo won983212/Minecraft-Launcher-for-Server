@@ -94,6 +94,10 @@
     <Compile Include="ErrorMessageObject.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="MinecraftLauncherMain.cs" />
+    <Compile Include="TimeoutSocket.cs" />
+    <Compile Include="TimeoutWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Updater\ServerStatus.cs" />
     <Compile Include="URLs.cs" />
     <Compile Include="Logger.cs" />

@@ -112,5 +112,29 @@ namespace Minecraft_Launcher_for_Server.Properties {
                 this["MemorySize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25565")]
+        public int MinecraftServerPort {
+            get {
+                return ((int)(this["MinecraftServerPort"]));
+            }
+            set {
+                this["MinecraftServerPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoJoinServer {
+            get {
+                return ((bool)(this["AutoJoinServer"]));
+            }
+            set {
+                this["AutoJoinServer"] = value;
+            }
+        }
     }
 }
